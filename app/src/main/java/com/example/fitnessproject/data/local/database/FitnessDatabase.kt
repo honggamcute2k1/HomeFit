@@ -5,16 +5,32 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.fitnessproject.data.local.dao.TopicDao
 import com.example.fitnessproject.data.local.dao.UserDao
-import com.example.fitnessproject.data.local.entity.User
+import com.example.fitnessproject.data.local.dao.VersionDao
+import com.example.fitnessproject.data.local.database.FitnessDatabase.Companion.DATABASE_VERSION
+import com.example.fitnessproject.data.local.entity.*
 import kotlinx.coroutines.CoroutineScope
 
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(
+    entities = [User::class,
+        DatabaseVersion::class,
+        Topic::class,
+        TopicDetail::class,
+        TopicDetailSelected::class,
+        TopicSelected::class],
+    version = DATABASE_VERSION,
+    exportSchema = false
+)
 abstract class FitnessDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun versionDao(): VersionDao
+    abstract fun topicDao(): TopicDao
 
     companion object {
+        const val DATABASE_VERSION = 1
+
         @Volatile
         private var INSTANCE: FitnessDatabase? = null
 
@@ -47,11 +63,17 @@ abstract class FitnessDatabase : RoomDatabase() {
             super.onCreate(db)
 //            context.resources.assets.open()
             INSTANCE?.let { database ->
-                db.execSQL(
-                    "INSERT INTO user (user_name, password, gender, height, weight) VALUES ('name test', '123', 1, 10.3, 10.3)," +
-                            "('name test', '123', 1, 10.3, 10.3)," +
-                            "('name test', '123', 1, 10.3, 10.3);"
-                )
+                //pre-populate topic
+                for (i in 0..5000) {
+                    db.execSQL(
+                        "INSERT INTO user (user_name, password, gender, height, weight) VALUES ('name test', '123', 1, 10.3, 10.3)," +
+                                "('name test', '123', 1, 10.3, 10.3)," +
+                                "('name test', '123', 1, 10.3, 10.3);"
+                    )
+                }
+
+                //final insert version database
+                db.execSQL("INSERT INTO database_version (version) VALUES (${DATABASE_VERSION})")
 
                 //test to pre-populate database
 //                scope.launch {
@@ -70,10 +92,6 @@ abstract class FitnessDatabase : RoomDatabase() {
 //                    userDao.insertUserList(list)
 //                }
             }
-        }
-
-        override fun onOpen(db: SupportSQLiteDatabase) {
-            super.onOpen(db)
         }
     }
 }

@@ -15,7 +15,7 @@ interface UserDao {
     @Insert
     fun insertUserList(users: MutableList<User>)
 
-    @Query("SELECT * FROM user LIMIT 500")
+    @Query("SELECT * FROM user")
     fun getAllUser(): List<User>
 
     @Query("SELECT * FROM user")

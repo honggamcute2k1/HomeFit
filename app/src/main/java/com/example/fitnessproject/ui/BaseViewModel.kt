@@ -16,6 +16,10 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         loadingData.value = isShowLoading
     }
 
+    fun onCreate() {
+
+    }
+
     fun onStart() {
         myScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     }

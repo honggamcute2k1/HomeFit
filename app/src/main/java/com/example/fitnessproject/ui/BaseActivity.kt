@@ -16,8 +16,9 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterf
         setContentView(R.layout.base_activity)
         this.layoutInflater.inflate(getLayoutId(), baseView, true)
         Glide.with(this).load(R.drawable.loading).into(imgLoading)
-        viewModel =
-            ViewModelProviders.of(this)[(this::class.java.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<V>]
+        viewModel = ViewModelProviders
+            .of(this)[(this::class.java.genericSuperclass as ParameterizedType)
+            .actualTypeArguments[0] as Class<V>]
         initScreen()
         bindData()
     }
@@ -28,7 +29,7 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterf
         }
     }
 
-    fun showLoading(isShow: Boolean) {
+    private fun showLoading(isShow: Boolean) {
         frame_loading?.showOrGone(isShow = isShow)
     }
 
