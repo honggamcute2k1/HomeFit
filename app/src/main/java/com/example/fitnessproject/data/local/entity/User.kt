@@ -23,5 +23,14 @@ data class User(
     val height: Double,
 
     @ColumnInfo(name = "weight")
-    val weight: Double
+    val weight: Double,
+
+    @ColumnInfo(name = "born")
+    val born: Int,
+
+    @ColumnInfo(name = "phone_number")
+    val phoneNumber: String,
+
+    @ColumnInfo(name = "full_name")
+    val fullName: String
 )
