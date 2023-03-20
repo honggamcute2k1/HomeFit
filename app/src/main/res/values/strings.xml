@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FitnessProject</string>
+
+    <!--Bottom menu-->
+    <string name="bottom_menu_txt_btn_first">Tập luyện</string>
+    <string name="bottom_menu_txt_btn_second">Báo cáo</string>
+    <string name="bottom_menu_txt_btn_third">Hồ sơ</string>
+
+    <!--Practice-->
+    <string name="practice_title">Thử thách tập luyện</string>
 </resources>

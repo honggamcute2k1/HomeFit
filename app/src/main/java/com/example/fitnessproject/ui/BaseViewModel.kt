@@ -3,25 +3,33 @@ package com.example.fitnessproject.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import com.example.fitnessproject.FitnessApplication
+import com.example.fitnessproject.data.exception.MyException
+import kotlinx.coroutines.*
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
-    var myScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    val sharePreference = (application as FitnessApplication).sharePreference
+    lateinit var myScope: CoroutineScope
+    lateinit var handlerException: CoroutineExceptionHandler
     val loadingData = MutableLiveData<Boolean>()
+    val errorLiveData = MutableLiveData<String>()
 
     fun showLoading(isShowLoading: Boolean) {
         loadingData.value = isShowLoading
     }
 
-    fun onCreate() {
-
+    open fun onCreate() {
+        handlerException = CoroutineExceptionHandler { _, exception ->
+            if (exception is MyException) {
+                errorLiveData.value = exception.error.error
+            } else {
+                errorLiveData.value = exception.toString()
+            }
+        }
+        myScope = CoroutineScope(Dispatchers.Main + SupervisorJob() + handlerException)
     }
 
     fun onStart() {
-        myScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     }
 
     fun onStop() {

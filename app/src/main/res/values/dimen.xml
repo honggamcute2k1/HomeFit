@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="size_loading">80dp</dimen>
+
+    <dimen name="bottom_menu_size_icon">38dp</dimen>
 </resources>

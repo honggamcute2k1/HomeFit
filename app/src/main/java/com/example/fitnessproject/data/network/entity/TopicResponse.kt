@@ -13,6 +13,7 @@ class TopicResponse(
 }
 
 class Topic(
+    val id: Int,
     val name: String,
     val type: Int,
     val items: List<TopicDetail>

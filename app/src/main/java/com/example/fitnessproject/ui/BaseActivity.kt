@@ -2,9 +2,11 @@ package com.example.fitnessproject.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitnessproject.R
 import kotlinx.android.synthetic.main.base_activity.*
 import java.lang.reflect.ParameterizedType
@@ -15,10 +17,15 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterf
         super.onCreate(savedInstanceState)
         setContentView(R.layout.base_activity)
         this.layoutInflater.inflate(getLayoutId(), baseView, true)
-        Glide.with(this).load(R.drawable.loading).into(imgLoading)
+        Glide.with(this)
+            .load(R.drawable.loading)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(imgLoading)
         viewModel = ViewModelProviders
             .of(this)[(this::class.java.genericSuperclass as ParameterizedType)
             .actualTypeArguments[0] as Class<V>]
+        viewModel.onCreate()
         initScreen()
         bindData()
     }
@@ -26,6 +33,9 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterf
     override fun bindData() {
         viewModel.loadingData.observe(this) {
             showLoading(it)
+        }
+        viewModel.errorLiveData.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -44,11 +54,6 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterf
     }
 }
 
-interface CoreInterface {
-    fun getLayoutId(): Int
-    fun initScreen()
-    fun bindData()
-}
 
 fun View.showOrGone(isShow: Boolean) {
     val visibility = if (isShow) View.VISIBLE else View.GONE

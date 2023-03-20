@@ -6,6 +6,7 @@
     <LinearLayout
         android:id="@+id/baseView"
         android:layout_width="match_parent"
+        android:background="@color/color_main"
         android:layout_height="match_parent"
         android:orientation="vertical" />
 

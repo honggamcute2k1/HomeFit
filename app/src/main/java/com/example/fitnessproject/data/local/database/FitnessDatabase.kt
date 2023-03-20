@@ -5,11 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.fitnessproject.data.local.dao.TopicDao
-import com.example.fitnessproject.data.local.dao.UserDao
-import com.example.fitnessproject.data.local.dao.VersionDao
+import com.example.fitnessproject.data.exception.ErrorException
+import com.example.fitnessproject.data.exception.MyException
+import com.example.fitnessproject.data.local.dao.*
 import com.example.fitnessproject.data.local.database.FitnessDatabase.Companion.DATABASE_VERSION
 import com.example.fitnessproject.data.local.entity.*
+import com.example.fitnessproject.data.network.entity.TopicResponse
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -19,7 +20,8 @@ import kotlinx.coroutines.CoroutineScope
         Topic::class,
         TopicDetail::class,
         TopicDetailSelected::class,
-        TopicSelected::class],
+        TopicSelected::class,
+        UserInformation::class],
     version = DATABASE_VERSION,
     exportSchema = false
 )
@@ -27,9 +29,12 @@ abstract class FitnessDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun versionDao(): VersionDao
     abstract fun topicDao(): TopicDao
+    abstract fun topicDetailDao(): TopicDetailDao
+    abstract fun weightDao(): WeightDao
 
     companion object {
         const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION_ERROR = -1
 
         @Volatile
         private var INSTANCE: FitnessDatabase? = null
@@ -61,21 +66,51 @@ abstract class FitnessDatabase : RoomDatabase() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-//            context.resources.assets.open()
-            INSTANCE?.let { database ->
-                //pre-populate topic
-                for (i in 0..5000) {
-                    db.execSQL(
-                        "INSERT INTO user (user_name, password, gender, height, weight) VALUES ('name test', '123', 1, 10.3, 10.3)," +
-                                "('name test', '123', 1, 10.3, 10.3)," +
-                                "('name test', '123', 1, 10.3, 10.3);"
-                    )
+            // use this solution to pre-populate to make sure data insert success
+            // after use database
+            try {
+                val jsonString = context.assets.open("topic.json").bufferedReader()
+                    .use { it.readText() }
+                val topicResponse = TopicResponse.fromJson(jsonString)
+                val stringTopic = StringBuilder()
+                val stringTopicDetail = StringBuilder()
+                stringTopic.append("INSERT INTO topic (id_topic, name, type) VALUES ")
+                stringTopicDetail.append("INSERT INTO detail_topic (name, description, url, id_topic) VALUES ")
+                for (i in topicResponse.topic.indices) {
+                    val item = topicResponse.topic[i]
+                    val idTopic = item.id
+                    val value = "('$idTopic', '${item.name}', '${item.type}')"
+                    stringTopic.append(value)
+                    if (i == topicResponse.topic.size - 1) {
+                        stringTopic.append(";")
+                    } else {
+                        stringTopic.append(", ")
+                    }
+                    for (j in item.items.indices) {
+                        val detail = item.items[j]
+                        val valueDetail =
+                            "('${detail.name}', '${detail.description}', '${detail.url}', '$idTopic')"
+                        stringTopicDetail.append(valueDetail)
+                        if (i == topicResponse.topic.size - 1 && j == item.items.size - 1) {
+                            stringTopicDetail.append(";")
+                        } else {
+                            stringTopicDetail.append(", ")
+                        }
+                    }
                 }
+                db.execSQL(stringTopic.toString())
+                db.execSQL(stringTopicDetail.toString())
+                db.execSQL("INSERT INTO database_version (version) VALUES ($DATABASE_VERSION)")
+            } catch (e: Exception) {
+                db.execSQL("INSERT INTO database_version (version) VALUES (-1)")
+                throw MyException(error = ErrorException.SQLITE_ERROR)
+            }
 
-                //final insert version database
-                db.execSQL("INSERT INTO database_version (version) VALUES (${DATABASE_VERSION})")
 
-                //test to pre-populate database
+            //Use liveData to get data change if use this solution to pre-populate
+//            INSTANCE?.let { database ->
+            //pre-populate topic
+            //test to pre-populate database
 //                scope.launch {
 //                    val userDao = database.userDao()
 //                    val user2 = User(
@@ -91,7 +126,7 @@ abstract class FitnessDatabase : RoomDatabase() {
 //                    }
 //                    userDao.insertUserList(list)
 //                }
-            }
+//            }
         }
     }
 }

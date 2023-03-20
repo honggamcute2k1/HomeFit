@@ -10,16 +10,15 @@ data class TopicDetailSelected(
     @ColumnInfo(name = "id")
     val id: Int,
 
+    @ColumnInfo(name = "state")
+    val state: Int,
+
     @ColumnInfo(name = "topic_detail_id")
     val topicDetailId: Int,
 
     @ColumnInfo(name = "topic_selected_id")
     val topicSelectedId: Int,
 
-    @ColumnInfo(name = "id_topic")
-    val idTopic: Int,
-
-    @ColumnInfo(name = "state")
-    val state: Int
-
+    @ColumnInfo(name = "time_do_it")
+    val time: String
 )

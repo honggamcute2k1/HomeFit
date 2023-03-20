@@ -21,6 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.gender.ChooseGenderActivity" />
+        <activity android:name=".ui.activities.main.MainActivity" />
+        <activity android:name=".ui.activities.topicdetail.ListTopicDetailActivity" />
+        <activity android:name=".ui.activities.topicdetail.TopicDetailActivity" />
     </application>
 
 </manifest>
