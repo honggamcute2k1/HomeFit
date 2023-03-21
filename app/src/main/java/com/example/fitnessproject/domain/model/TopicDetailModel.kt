@@ -15,7 +15,7 @@ data class TopicDetailModel(
     companion object {
         fun toTopicDetailModel(src: TopicDetail): TopicDetailModel {
             return TopicDetailModel(
-                src.idTopic,
+                src.idDetail,
                 src.name,
                 src.description,
                 src.url,
