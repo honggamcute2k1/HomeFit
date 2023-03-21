@@ -29,7 +29,10 @@ class GenderViewModel(application: Application) : BaseViewModel(application) {
                     password = "",
                     gender = gender.gender,
                     height = 0.0,
-                    weight = 0.0
+                    weight = 0.0,
+                    phoneNumber = "",
+                    born = 1980,
+                    fullName = ""
                 )
                 userUserCase.insertUser(newUser)
                 sharePreference.saveSetUpFirstTime(isSetup = true)

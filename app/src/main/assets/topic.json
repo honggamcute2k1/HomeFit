@@ -1,7 +1,6 @@
 {
   "topic": [
     {
-      "id": 1,
       "name": "Tập toàn thân",
       "type": "1",
       "items": [
@@ -53,7 +52,6 @@
       ]
     },
     {
-      "id": 2,
       "name": "Tập cơ bụng",
       "type": "2",
       "items": [
@@ -80,7 +78,6 @@
       ]
     },
     {
-      "id": 3,
       "name": "Tập mông",
       "type": "3",
       "items": [
@@ -117,7 +114,6 @@
       ]
     },
     {
-      "id": 4,
       "name": "Tập chân",
       "type": "4",
       "items": [
@@ -145,6 +141,32 @@
           "name": "Ngồi dựa tường ",
           "description": "Bắt đầu bằng việc dựa lưng vào tường, sau đó trượt xuống cho tới khi đầu gói vuông góc 90 độ.\nDựa lưng vào tường, để tay và cánh tay phía trên chân. Giữ tư thế.\nBài tập này nhằm làm tăng các cơ bốn đầu đùi.",
           "url": "https://youtu.be/Yp3ZwACK9v4"
+        }
+      ]
+    },
+    {
+      "name": "Tập tay",
+      "type": "5",
+      "items": [
+        {
+          "name": "chống đẩy",
+          "description": "Nằm áp xuống sàn lấy tay đỡ thân. Giữ thẳng thân trong khi nang và hạ bằng tay. Bài tập này giúp tập ngực, vai, cơ tay sau, lưng và chân.",
+          "url": "https://www.youtube.com/watch?v=R08gYyypGto"
+        },
+        {
+          "name": "Tập cơ tay sau ghế",
+          "description": "Từ vị trí ban đầu, ngồi trên ghế. Rồi di chuyển mông khỏi ghế, tay giữ vào mép ghế.\nTừ từ cong và duỗi thẳng tay để nâng và hạ cơ thể.\nBài tập này có tác dụng tốt cho cơ tay sau.",
+          "url": "https://youtu.be/VlwBJE1WtOQ"
+        },
+        {
+          "name": "Leo núi",
+          "description": "Bắt đầu ở tư thế chống đẩy. Co gối phải về phía ngực và giữ chân trái thẳng, sau đó nhanh chóng chuyển sang chân khác.\nBài tập này tăng cường nhiều nhóm cơ.",
+          "url": "https://youtu.be/VlwBJE1WtOQ"
+        },
+        {
+          "name": "đo sàn",
+          "description": "Nằm trên sàn, chạm sàn bằng ngón chân và cẳng tay. Giữ thẳng cơ thể và giữ tư thế càng lâu càng tốt. Bài tập này làm khỏe cơ bụng, lưng và vai.",
+          "url": "https://youtu.be/Fcbw82ykBvY"
         }
       ]
     }
