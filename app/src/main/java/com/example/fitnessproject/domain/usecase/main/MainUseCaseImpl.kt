@@ -14,8 +14,10 @@ class MainUseCaseImpl(private val topicRepository: TopicRepository) : MainUseCas
     }
 
     override suspend fun getAllTopicById(idTopic: Int): List<TopicDetailModel> {
-        return topicRepository.getAllTopicDetail(idTopic).map {
-            TopicDetailModel.toTopicDetailModel(it)
+        return withContext(Dispatchers.IO) {
+            topicRepository.getAllTopicDetail(idTopic).map {
+                TopicDetailModel.toTopicDetailModel(it)
+            }
         }
     }
 

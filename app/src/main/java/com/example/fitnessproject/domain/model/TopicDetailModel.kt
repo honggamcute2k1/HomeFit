@@ -9,7 +9,8 @@ data class TopicDetailModel(
     val idDetail: Int,
     val name: String,
     val description: String,
-    val url: String,
+    val idVideo: String,
+    val tutorial: String,
     val idTopic: Int
 ) : Parcelable {
     companion object {
@@ -18,7 +19,8 @@ data class TopicDetailModel(
                 src.idDetail,
                 src.name,
                 src.description,
-                src.url,
+                src.idVideo,
+                src.tutorial,
                 src.idTopic
             )
         }

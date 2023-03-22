@@ -75,7 +75,7 @@ abstract class FitnessDatabase : RoomDatabase() {
                 val stringTopic = StringBuilder()
                 val stringTopicDetail = StringBuilder()
                 stringTopic.append("INSERT INTO topic (id_topic, name, type) VALUES ")
-                stringTopicDetail.append("INSERT INTO detail_topic (name, description, url, id_topic) VALUES ")
+                stringTopicDetail.append("INSERT INTO detail_topic (name, description, id_video, tutorial, id_topic) VALUES ")
                 for (i in topicResponse.topic.indices) {
                     val item = topicResponse.topic[i]
                     val idTopic = item.id
@@ -89,7 +89,7 @@ abstract class FitnessDatabase : RoomDatabase() {
                     for (j in item.items.indices) {
                         val detail = item.items[j]
                         val valueDetail =
-                            "('${detail.name}', '${detail.description}', '${detail.url}', '$idTopic')"
+                            "('${detail.name}', '${detail.description}', '${detail.idVideo}', '${detail.tutorial}', '$idTopic')"
                         stringTopicDetail.append(valueDetail)
                         if (i == topicResponse.topic.size - 1 && j == item.items.size - 1) {
                             stringTopicDetail.append(";")

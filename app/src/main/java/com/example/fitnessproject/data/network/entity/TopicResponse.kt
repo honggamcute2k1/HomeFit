@@ -22,5 +22,6 @@ class Topic(
 data class TopicDetail(
     val name: String,
     val description: String,
-    val url: String
+    val idVideo: String,
+    val tutorial: String
 )

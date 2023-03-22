@@ -3,6 +3,7 @@ package com.example.fitnessproject.ui.activities.topicdetail
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.example.fitnessproject.R
+import com.example.fitnessproject.domain.model.TopicDetailModel
 import com.example.fitnessproject.domain.model.TopicModel
 import com.example.fitnessproject.domain.model.TopicType
 import com.example.fitnessproject.ui.BaseActivity
@@ -20,8 +21,15 @@ class ListTopicDetailActivity : BaseActivity<TopicDetailViewModel>() {
     override fun initScreen() {
         val topicModel = intent.getParcelableExtra<TopicModel>(KEY_TOPIC_MODEL)
         topicModel?.let {
-            viewModel.getListTopicDetailOfTopic(topicModel = it)
+            viewModel.getListTopicDetailOfTopic(topicId = it.idTopic)
             imageTopic?.setImageResource(TopicType.valueOf(it.type).resource)
+        }
+
+        btnStart?.setOnClickListener {
+            val model = viewModel.topicDetailLiveData.value?.firstOrNull()
+            model?.let { m ->
+                gotoDetail(m)
+            }
         }
 
     }
@@ -40,13 +48,17 @@ class ListTopicDetailActivity : BaseActivity<TopicDetailViewModel>() {
                 )
                 adapter = AdapterTopicDetail(list = list,
                     onItemTopicDetailClicked = { model ->
-                        val intent =
-                            Intent(this@ListTopicDetailActivity, TopicDetailActivity::class.java)
-                        intent.putExtra(TopicDetailActivity.KEY_TOPIC_DETAIL, model)
-                        startActivity(intent)
+                        gotoDetail(model)
                     })
             }
 
         }
+    }
+
+    private fun gotoDetail(model: TopicDetailModel) {
+        val intent =
+            Intent(this@ListTopicDetailActivity, TopicDetailActivity::class.java)
+        intent.putExtra(TopicDetailActivity.KEY_TOPIC_DETAIL, model)
+        startActivity(intent)
     }
 }

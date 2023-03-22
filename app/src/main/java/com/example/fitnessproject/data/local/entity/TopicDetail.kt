@@ -16,8 +16,11 @@ data class TopicDetail(
     @ColumnInfo(name = "description")
     val description: String,
 
-    @ColumnInfo(name = "url")
-    val url: String,
+    @ColumnInfo(name = "id_video")
+    val idVideo: String,
+
+    @ColumnInfo(name = "tutorial")
+    val tutorial: String,
 
     @ColumnInfo(name = "id_topic")
     val idTopic: Int
