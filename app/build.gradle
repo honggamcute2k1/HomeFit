@@ -66,6 +66,8 @@ dependencies {
 //    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
 
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // Kotlin components
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

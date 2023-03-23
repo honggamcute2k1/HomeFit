@@ -3,6 +3,9 @@ package com.example.fitnessproject.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.fitnessproject.data.local.TimeConverter
+import java.util.*
 
 @Entity(tableName = "information")
 data class UserInformation(
@@ -14,7 +17,8 @@ data class UserInformation(
     val weight: Double?,
 
     @ColumnInfo(name = "time")
-    val time: String,
+    @TypeConverters(TimeConverter::class)
+    val time: Date,
 
     @ColumnInfo(name = "user_id")
     val userId: Int

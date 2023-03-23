@@ -2,7 +2,6 @@ package com.example.fitnessproject.domain.model
 
 enum class State(val state: Int) {
     NOT_STARTED(-1),
-    IN_PROGRESS(0),
     DONE(1);
 
     companion object {

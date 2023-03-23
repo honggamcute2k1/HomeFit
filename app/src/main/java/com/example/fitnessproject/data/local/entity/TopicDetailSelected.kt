@@ -3,6 +3,9 @@ package com.example.fitnessproject.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.fitnessproject.data.local.TimeConverter
+import java.util.*
 
 @Entity(tableName = "topic_detail_selected")
 data class TopicDetailSelected(
@@ -20,5 +23,6 @@ data class TopicDetailSelected(
     val topicSelectedId: Int,
 
     @ColumnInfo(name = "time_do_it")
-    val time: String
+    @TypeConverters(TimeConverter::class)
+    val timeDoIt: Date
 )
