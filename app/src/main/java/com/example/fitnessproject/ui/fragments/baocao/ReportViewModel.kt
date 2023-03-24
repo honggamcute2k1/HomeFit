@@ -17,6 +17,7 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
         UserUseCaseImpl((application as FitnessApplication).userRepository)
 
     val isAddWeightLiveData = MutableLiveData<Boolean>()
+    val weightListLiveData = MutableLiveData<List<UserInformationModel>>()
 
     fun insertOrUpdateWeight(weight: Double, time: Date) {
         showLoading(isShowLoading = true)
@@ -37,6 +38,15 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
                 )
             )
             isAddWeightLiveData.value = true
+            showLoading(isShowLoading = false)
+        }
+    }
+
+    fun getAllWeightInfoInTime(startTime: Date, endTime: Date) {
+        showLoading(isShowLoading = true)
+        myScope.launch {
+            val weightList = userUserCase.getWeightOfUserInTime(startTime, endTime).filterNotNull()
+            weightListLiveData.value = weightList
             showLoading(isShowLoading = false)
         }
     }
