@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object TimeConverter {
-    val sdf = SimpleDateFormat("yyyy/mm/dd")
+    private val sdf = SimpleDateFormat("yyyy/mm/dd")
 
     @TypeConverter
     fun fromDateTimeString(value: String?): Date? {

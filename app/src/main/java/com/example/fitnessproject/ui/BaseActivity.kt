@@ -10,6 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitnessproject.R
 import kotlinx.android.synthetic.main.base_activity.*
 import java.lang.reflect.ParameterizedType
+import java.util.*
 
 abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterface {
     lateinit var viewModel: V
@@ -54,6 +55,22 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterf
     }
 }
 
+fun Int.getMonth(): String {
+    return when (this) {
+        Calendar.JANUARY -> "JANUARY"
+        Calendar.FEBRUARY -> "FEBRUARY"
+        Calendar.MARCH -> "MARCH"
+        Calendar.APRIL -> "APRIL"
+        Calendar.MAY -> "MAY"
+        Calendar.JUNE -> "JUNE"
+        Calendar.JULY -> "JULY"
+        Calendar.AUGUST -> "JULY"
+        Calendar.SEPTEMBER -> "SEPTEMBER"
+        Calendar.OCTOBER -> "OCTOBER"
+        Calendar.NOVEMBER -> "NOVEMBER"
+        else -> "DECEMBER"
+    }
+}
 
 fun View.showOrGone(isShow: Boolean) {
     val visibility = if (isShow) View.VISIBLE else View.GONE

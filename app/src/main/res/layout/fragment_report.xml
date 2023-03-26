@@ -35,16 +35,16 @@
             android:orientation="vertical">
 
             <com.applandeo.materialcalendarview.CalendarView
-                android:layout_width="match_parent"
-                app:headerColor="#CC114B85"
                 android:id="@+id/calendarView"
-                app:eventsEnabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:abbreviationsBarColor="#CC114B85"
-                app:daysLabelsColor="@color/white"
                 app:abbreviationsLabelsColor="@color/white"
-                app:todayLabelColor="#FFC400"
+                app:daysLabelsColor="@color/white"
+                app:eventsEnabled="true"
+                app:headerColor="#CC114B85"
                 app:pagesColor="#CC114B85"
-                android:layout_height="wrap_content" />
+                app:todayLabelColor="#FFC400" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

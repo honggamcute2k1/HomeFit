@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.fitnessproject.data.exception.ErrorException
 import com.example.fitnessproject.data.exception.MyException
+import com.example.fitnessproject.data.local.TimeConverter
 import com.example.fitnessproject.data.local.dao.*
 import com.example.fitnessproject.data.local.database.FitnessDatabase.Companion.DATABASE_VERSION
 import com.example.fitnessproject.data.local.entity.*
@@ -25,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
     version = DATABASE_VERSION,
     exportSchema = false
 )
+@TypeConverters(TimeConverter::class)
 abstract class FitnessDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun versionDao(): VersionDao

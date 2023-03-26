@@ -20,10 +20,10 @@ data class User(
     val gender: Int,
 
     @ColumnInfo(name = "height")
-    val height: Double,
+    val height: Double? = null,
 
     @ColumnInfo(name = "weight")
-    val weight: Double,
+    val weight: Double? = null,
 
     @ColumnInfo(name = "born")
     val born: Int,

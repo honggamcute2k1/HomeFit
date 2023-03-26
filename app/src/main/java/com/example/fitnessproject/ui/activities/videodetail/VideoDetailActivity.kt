@@ -120,6 +120,8 @@ class VideoDetailActivity : BaseActivity<VideoDetailViewModel>() {
                     if (state == PlayerConstants.PlayerState.ENDED) {
                         setupLoadVideo()
                         isPlay = false
+                    } else if (state == PlayerConstants.PlayerState.VIDEO_CUED) {
+
                     }
                 }
 

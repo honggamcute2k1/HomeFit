@@ -1,6 +1,7 @@
 package com.example.fitnessproject.ui.fragments.baocao
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.fitnessproject.FitnessApplication
 import com.example.fitnessproject.domain.model.UserInformationModel
@@ -18,6 +19,14 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
 
     val isAddWeightLiveData = MutableLiveData<Boolean>()
     val weightListLiveData = MutableLiveData<List<UserInformationModel>>()
+
+    var year: Int? = null
+    var month: Int? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        getAllWeightInfoInTime()
+    }
 
     fun insertOrUpdateWeight(weight: Double, time: Date) {
         showLoading(isShowLoading = true)
@@ -42,10 +51,26 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
-    fun getAllWeightInfoInTime(startTime: Date, endTime: Date) {
+    fun getAllWeightInfoInTime(
+        year: Int? = null,
+        month: Int? = null
+    ) {
         showLoading(isShowLoading = true)
+        val startDate = Calendar.getInstance()
+        val currentMonth = month ?: startDate.get(Calendar.MONTH)
+        val currentYear = year ?: startDate.get(Calendar.YEAR)
+        this.month = currentMonth
+        this.year = currentYear
+        val startDay = 1
+        startDate.set(currentYear, currentMonth, startDay)
+        val endDay = startDate.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val endDate = Calendar.getInstance()
+        endDate.set(currentYear, currentMonth, endDay)
         myScope.launch {
-            val weightList = userUserCase.getWeightOfUserInTime(startTime, endTime).filterNotNull()
+            Log.e("TAG", "startDate $startDate")
+            Log.e("TAG", "endDate $endDate")
+            val weightList =
+                userUserCase.getWeightOfUserInTime(startDate.time, endDate.time).filterNotNull()
             weightListLiveData.value = weightList
             showLoading(isShowLoading = false)
         }

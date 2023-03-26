@@ -22,6 +22,5 @@ interface TopicDetailDao {
     fun getTopicDetailSelectedByDay(date: Date, topicDetailId: Int): TopicDetailSelected
 
     @Query("SELECT * FROM topic_detail_selected WHERE time_do_it BETWEEN :startTime AND :endTime")
-    fun getTopicDetailSelectedInTime(startTime: Date, endTime: Date)
-
+    fun getTopicDetailSelectedInTime(startTime: Date, endTime: Date): List<TopicDetailSelected>
 }
