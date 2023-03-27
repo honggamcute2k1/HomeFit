@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import java.text.SimpleDateFormat
 import java.util.*
 
-object TimeConverter {
+class TimeConverter {
     private val sdf = SimpleDateFormat("yyyy/mm/dd")
 
     @TypeConverter
