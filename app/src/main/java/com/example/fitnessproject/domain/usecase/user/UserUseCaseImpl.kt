@@ -36,7 +36,7 @@ class UserUseCaseImpl(private val userRepository: UserRepository) : UserUseCase 
                 time = userInformation.time,
                 userId = userInformation.userId
             )
-            userRepository.insertWeightForUser(uI)
+            userRepository.updateWeightForUser(uI)
         }
     }
 

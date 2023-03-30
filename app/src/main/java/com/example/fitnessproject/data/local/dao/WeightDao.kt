@@ -18,6 +18,6 @@ interface WeightDao {
     @Query("SELECT * FROM information WHERE time = :time")
     fun getUserInformationByTime(time: Date): UserInformation?
 
-    @Query("SELECT * FROM information WHERE time BETWEEN :startDate AND :endDate")
+    @Query("SELECT * FROM information WHERE time BETWEEN :startDate AND :endDate ORDER BY time")
     fun getUserInformationInTime(startDate: Date, endDate: Date): List<UserInformation>
 }

@@ -11,7 +11,7 @@ import java.util.*
 data class TopicDetailSelected(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int,
+    var id: Int? = null,
 
     @ColumnInfo(name = "state")
     val state: Int,

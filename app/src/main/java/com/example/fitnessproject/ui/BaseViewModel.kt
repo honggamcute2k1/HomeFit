@@ -1,6 +1,7 @@
 package com.example.fitnessproject.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.fitnessproject.FitnessApplication
@@ -20,6 +21,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
 
     open fun onCreate() {
         handlerException = CoroutineExceptionHandler { _, exception ->
+            Log.e("TAG", "Exception ${exception.message}")
             if (exception is MyException) {
                 errorLiveData.value = exception.error.error
             } else {

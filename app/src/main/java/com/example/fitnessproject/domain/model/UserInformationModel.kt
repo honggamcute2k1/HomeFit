@@ -21,4 +21,10 @@ data class UserInformationModel(
             }
         }
     }
+
+    fun getDayInMonth(): String {
+        val calendar = Calendar.getInstance()
+        calendar.time = time
+        return ""
+    }
 }

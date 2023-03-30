@@ -33,7 +33,9 @@ class GenderViewModel(application: Application) : BaseViewModel(application) {
                     fullName = ""
                 )
                 userUserCase.insertUser(newUser)
+                val userId = userUserCase.getAllUser().first().userId
                 sharePreference.saveSetUpFirstTime(isSetup = true)
+                userId?.let { sharePreference.saveUserId(userId = it) }
             }
             setupUserLiveData.value = true
             showLoading(isShowLoading = false)
