@@ -13,6 +13,12 @@ class UserUseCaseImpl(private val userRepository: UserRepository) : UserUseCase 
         return userRepository.insertUser(user)
     }
 
+    override suspend fun updateUser(user: User) {
+        return withContext(Dispatchers.IO) {
+            userRepository.updateUser(user)
+        }
+    }
+
     override suspend fun getAllUser(): List<User> {
         return userRepository.getAllUser()
     }
