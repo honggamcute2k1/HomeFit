@@ -27,7 +27,7 @@ class AdapterDays(
         holder.itemView.txtItemMonth?.text = month.toString()
         holder.itemView.rootItemMonth?.setOnClickListener {
             index = holder.absoluteAdapterPosition
-            onDayClicked.invoke(index)
+            onDayClicked.invoke(month)
             notifyDataSetChanged()
         }
         holder.itemView.viewMonthSelected?.showOrGone(index == position)

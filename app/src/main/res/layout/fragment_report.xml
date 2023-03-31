@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_main">
 
     <RelativeLayout
         android:id="@+id/header"
@@ -38,12 +39,12 @@
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:abbreviationsBarColor="#CC114B85"
+                app:abbreviationsBarColor="#0F4C85"
                 app:abbreviationsLabelsColor="@color/white"
                 app:daysLabelsColor="@color/white"
                 app:eventsEnabled="true"
-                app:headerColor="#CC114B85"
-                app:pagesColor="#CC114B85"
+                app:headerColor="#0F4C85"
+                app:pagesColor="#0F4C85"
                 app:todayLabelColor="#FFC400" />
 
             <RelativeLayout
@@ -70,10 +71,40 @@
                     android:textSize="16dp" />
             </RelativeLayout>
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="210dp" />
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:background="#0F4C85"
+                android:orientation="vertical">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp" />
+
+                <TextView
+                    android:id="@+id/txtWeightNow"
+                    android:layout_marginStart="@dimen/mg_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/txtWeightLightest"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/mg_start"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/txtWeightHeaviest"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/mg_start"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

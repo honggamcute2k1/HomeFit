@@ -28,4 +28,10 @@ class SharePreferenceImpl(application: FitnessApplication) : SharePreference {
     override fun isSetupFirstTime() =
         sharePreference.getBoolean(SharePreference.KEY_SETUP_FIRST_TIME, false)
 
+    override fun saveUserId(userId: Int) {
+        sharePreference.edit().putInt(SharePreference.KEY_ID_USER, userId).apply()
+    }
+
+    override fun getUserId() = sharePreference.getInt(SharePreference.KEY_ID_USER, -1)
+
 }

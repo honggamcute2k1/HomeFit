@@ -1,31 +1,34 @@
 package com.example.fitnessproject.ui.fragments.baocao
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.fitnessproject.FitnessApplication
+import com.example.fitnessproject.domain.model.TopicDetailSelectedModel
 import com.example.fitnessproject.domain.model.UserInformationModel
+import com.example.fitnessproject.domain.usecase.main.MainUseCase
+import com.example.fitnessproject.domain.usecase.main.MainUseCaseImpl
 import com.example.fitnessproject.domain.usecase.user.UserUseCase
 import com.example.fitnessproject.domain.usecase.user.UserUseCaseImpl
 import com.example.fitnessproject.ui.BaseViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.*
 
 class ReportViewModel(application: Application) : BaseViewModel(application) {
     private val userUserCase: UserUseCase =
         UserUseCaseImpl((application as FitnessApplication).userRepository)
+    private val mainUseCase: MainUseCase =
+        MainUseCaseImpl((application as FitnessApplication).topicRepository)
 
     val isAddWeightLiveData = MutableLiveData<Boolean>()
     val weightListLiveData = MutableLiveData<List<UserInformationModel>>()
+    val topicDetailSelectedLiveData = MutableLiveData<List<TopicDetailSelectedModel>>()
 
     var year: Int? = null
     var month: Int? = null
 
     override fun onCreate() {
         super.onCreate()
-        getAllWeightInfoInTime()
+        getDataInTime()
     }
 
     fun insertOrUpdateWeight(weight: Double, time: Date) {
@@ -51,7 +54,7 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
-    fun getAllWeightInfoInTime(
+    fun getDataInTime(
         year: Int? = null,
         month: Int? = null
     ) {
@@ -67,12 +70,28 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
         val endDate = Calendar.getInstance()
         endDate.set(currentYear, currentMonth, endDay)
         myScope.launch {
-            Log.e("TAG", "startDate $startDate")
-            Log.e("TAG", "endDate $endDate")
-            val weightList =
-                userUserCase.getWeightOfUserInTime(startDate.time, endDate.time).filterNotNull()
-            weightListLiveData.value = weightList
+            val weightDeferred = async(Dispatchers.IO) {
+                delay(1500)
+                userUserCase.getWeightOfUserInTime(
+                    startDate.time,
+                    endDate.time
+                )
+            }
+            val topicDetailSelectedDeferred = async(Dispatchers.IO) {
+                mainUseCase.getTopicDetailSelectedInTime(
+                    startDate.time,
+                    endDate.time
+                )
+            }
+            weightListLiveData.value = weightDeferred.await().filterNotNull()
+            topicDetailSelectedLiveData.value =
+                topicDetailSelectedDeferred.await().distinctBy { it.timeDoIt }
             showLoading(isShowLoading = false)
         }
+    }
+
+    fun getCurrentDateString(): String {
+        val calendar = Calendar.getInstance()
+        return calendar.time.toDateString()
     }
 }

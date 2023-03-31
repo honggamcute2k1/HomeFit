@@ -53,8 +53,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailViewModel>() {
     override fun initScreen() {
         topicDetailModel = intent.getParcelableExtra(KEY_TOPIC_DETAIL)
         topicDetailModel?.let { item ->
-            val topicId = item.idTopic
-            viewModel.getListTopicDetail(idTopic = topicId)
+            viewModel.getListTopicDetail(item)
             txtNameTopicDetail?.text = item.name
         }
 
@@ -175,6 +174,9 @@ class VideoDetailActivity : BaseActivity<VideoDetailViewModel>() {
             previousItem
         }
         topicDetailModel = topicDetailList[afterIndex]
+        topicDetailModel?.let { model ->
+            viewModel.insertTopicSelectedDetail(model)
+        }
         setupLayoutBtnNextOrPrevious()
         setupLoadVideo()
     }

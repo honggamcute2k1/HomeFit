@@ -18,4 +18,17 @@ class FitnessApplication : Application() {
             database.topicDetailDao()
         )
     }
+
+
+    override fun onCreate() {
+        super.onCreate()
+        getScreenSize()
+    }
+
+    private fun getScreenSize() {
+        resources.displayMetrics.run {
+            screenDensity = this.density
+
+        }
+    }
 }

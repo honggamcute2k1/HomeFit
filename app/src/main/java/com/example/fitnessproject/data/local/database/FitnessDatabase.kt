@@ -35,9 +35,16 @@ abstract class FitnessDatabase : RoomDatabase() {
     abstract fun topicDetailDao(): TopicDetailDao
     abstract fun weightDao(): WeightDao
 
+
     companion object {
         const val DATABASE_VERSION = 1
         const val DATABASE_VERSION_ERROR = -1
+
+//        var MIGRATION_1_TO_2: Migration = object : Migration(1, 2) {
+//            override fun migrate(database: SupportSQLiteDatabase) {
+////                database.execSQL("ALTER TABLE question ADD COLUMN answerD TEXT")
+//            }
+//        }
 
         @Volatile
         private var INSTANCE: FitnessDatabase? = null
@@ -49,18 +56,13 @@ abstract class FitnessDatabase : RoomDatabase() {
                     FitnessDatabase::class.java,
                     "fitness_database"
                 ).addCallback(WordDatabaseCallback(scope, context))
+//                    .addMigrations(MIGRATION_1_TO_2)
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
     }
-//    private val callback = object: RoomDatabase.Callback() {
-//        override fun onCreate(db: SupportSQLiteDatabase) {
-//            super.onCreate(db)
-//            db.insert()
-//        }
-//    }
 
     private class WordDatabaseCallback(
         private val scope: CoroutineScope,
