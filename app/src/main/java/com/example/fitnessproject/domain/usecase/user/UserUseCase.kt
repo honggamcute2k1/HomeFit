@@ -7,6 +7,8 @@ import java.util.*
 interface UserUseCase {
     suspend fun insertUser(user: User)
 
+    suspend fun updateUser(user: User)
+
     suspend fun getAllUser(): List<User>
 
     suspend fun insertWeightForUser(userInformation: UserInformationModel)

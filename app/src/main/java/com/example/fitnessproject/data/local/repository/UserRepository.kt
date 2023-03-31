@@ -7,6 +7,8 @@ import java.util.*
 interface UserRepository {
     suspend fun insertUser(user: User)
 
+    suspend fun updateUser(user: User)
+
     suspend fun getAllUser(): List<User>
 
     suspend fun insertWeightForUser(userInformation: UserInformation)

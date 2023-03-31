@@ -12,9 +12,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.example.fitnessproject.R
+import com.example.fitnessproject.data.local.entity.User
+import com.example.fitnessproject.domain.model.Gender
 import com.example.fitnessproject.ui.BaseActivity
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.android.synthetic.main.activity_edit_information.*
 
 class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
     override fun getLayoutId() = R.layout.activity_edit_information
@@ -24,8 +27,8 @@ class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
     var storagePermission: Array<String>? = null
     var imgSelfie: ImageView? = null
     var imgBack: ImageView? = null
-    var resultUri: Uri ?= null
-    var txtAddImageView : TextView ?= null
+    var resultUri: Uri? = null
+    var txtAddImageView: TextView? = null
 
     override fun initScreen() {
         imgSelfie = findViewById<ImageView>(R.id.imgSelfie)
@@ -34,6 +37,13 @@ class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
         imgBack?.setOnClickListener(View.OnClickListener {
             onBackPressed()
         })
+
+        btnSave?.setOnClickListener {
+            viewModel.user?.fullName = editTextFullName?.text?.toString() ?: ""
+            viewModel.user?.born = edtBorn?.text?.toString()?.toInt() ?: 1980
+            viewModel.user?.phoneNumber = edtPhone?.text?.toString() ?: ""
+            viewModel.user?.let { it1 -> viewModel.updateUser(it1) }
+        }
 
         cameraPermission = arrayOf<String>(
             Manifest.permission.CAMERA,
@@ -61,6 +71,21 @@ class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
                 }
             }
         })
+    }
+
+    override fun bindData() {
+        super.bindData()
+        viewModel.userInfoLiveData.observe(this) { user ->
+            viewModel.user = user
+            setupData(user)
+        }
+    }
+
+    private fun setupData(user: User) {
+        editTextFullName?.setText(user.fullName)
+        edtPhone?.setText(user.phoneNumber)
+        edtBorn?.setText(user.born.toString())
+        editTextGender?.setText(Gender.valueOf(user.gender)?.name ?: "")
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

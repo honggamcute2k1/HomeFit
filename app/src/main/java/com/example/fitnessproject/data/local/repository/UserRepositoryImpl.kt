@@ -13,6 +13,10 @@ class UserRepositoryImpl(private val userDao: UserDao, private val weightDao: We
         userDao.insertUser(user)
     }
 
+    override suspend fun updateUser(user: User) {
+        userDao.updateUser(user)
+    }
+
     override suspend fun getAllUser(): List<User> {
         return userDao.getAllUser()
     }

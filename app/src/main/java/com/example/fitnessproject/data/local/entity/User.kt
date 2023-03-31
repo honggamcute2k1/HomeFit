@@ -11,13 +11,16 @@ data class User(
     val userId: Int? = null,
 
     @ColumnInfo(name = "user_name")
-    val name: String,
+    var name: String,
 
     @ColumnInfo(name = "password")
     val password: String,
 
+    @ColumnInfo(name = "thumbnail")
+    var thumbnail: String? = null,
+
     @ColumnInfo(name = "gender")
-    val gender: Int,
+    var gender: Int,
 
     @ColumnInfo(name = "height")
     val height: Double? = null,
@@ -26,11 +29,11 @@ data class User(
     val weight: Double? = null,
 
     @ColumnInfo(name = "born")
-    val born: Int,
+    var born: Int,
 
     @ColumnInfo(name = "phone_number")
-    val phoneNumber: String,
+    var phoneNumber: String,
 
     @ColumnInfo(name = "full_name")
-    val fullName: String
+    var fullName: String
 )
