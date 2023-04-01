@@ -1,11 +1,15 @@
 package com.example.fitnessproject.ui.fragments.baocao
 
+import android.app.ProgressDialog.show
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import android.view.View
+import android.widget.TextView
 import com.applandeo.materialcalendarview.EventDay
 import com.example.fitnessproject.R
 import com.example.fitnessproject.domain.model.UserInformationModel
 import com.example.fitnessproject.ui.BaseFragment
+import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddHeight
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddWeight
 import com.example.fitnessproject.widget.YAxisRenderer
 import com.github.mikephil.charting.components.LimitLine
@@ -30,6 +34,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
 
     override fun initScreen() {
         setupLineChart()
+        var btnEditBmi: TextView? = view?.findViewById(R.id.btnEdiBmi)
         btnAddWeight?.setOnClickListener {
             activity?.let { a ->
                 dialogAddWeight?.dismiss()
@@ -45,6 +50,13 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             }
 
         }
+
+        btnEditBmi?.setOnClickListener(View.OnClickListener {
+            DialogAddHeight().show(
+                childFragmentManager, "PurchaseConfirmationDialog"
+            )
+        })
+
         calendarView?.setOnForwardPageChangeListener {
             changeMonthCalendar()
         }
