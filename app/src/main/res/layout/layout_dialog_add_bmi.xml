@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#80000000">
@@ -43,6 +42,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:inputType="number"
                 android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtUnitWight"
                 app:layout_constraintStart_toEndOf="@+id/txtTitleWight"
@@ -85,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:inputType="number"
+                android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtUnitHeight"
@@ -108,7 +109,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearAreaHeight">
@@ -119,14 +119,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:paddingVertical="10dp"
                 android:text="HUỶ"
                 android:textColor="@color/white" />
 
-            <View
-                android:layout_width="1dp"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="50dp"
-                android:background="@color/white" />
+                android:layout_weight="0.1"
+                android:gravity="center_horizontal">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/btnSaveWeight"
@@ -134,6 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:paddingVertical="10dp"
                 android:text="LƯU"
                 android:textColor="@color/white" />
         </LinearLayout>

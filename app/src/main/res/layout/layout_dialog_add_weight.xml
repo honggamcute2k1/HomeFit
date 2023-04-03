@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:background="@color/color_main"
+        android:background="@drawable/bg_dialog"
         android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -57,6 +57,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:hint="CÂN NẶNG..."
                 android:inputType="number"
+                android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtUnitWeight"
@@ -78,7 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearAreaWeight">
@@ -88,21 +88,31 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingVertical="10dp"
                 android:gravity="center"
                 android:text="HUỶ"
                 android:textColor="@color/white" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="50dp"
-                android:background="@color/white" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.1"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="match_parent"
+                    android:background="@color/white" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/btnSaveWeight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingVertical="10dp"
                 android:gravity="center"
                 android:text="LƯU"
                 android:textColor="@color/white" />

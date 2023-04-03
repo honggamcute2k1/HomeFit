@@ -200,9 +200,9 @@ class VideoDetailActivity : BaseActivity<VideoDetailViewModel>() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         val intent = Intent(this, QuestionExitActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     override fun onStop() {
