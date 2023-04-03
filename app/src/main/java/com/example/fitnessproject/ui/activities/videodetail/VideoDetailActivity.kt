@@ -1,11 +1,13 @@
 package com.example.fitnessproject.ui.activities.videodetail
 
+import android.content.Intent
 import android.os.CountDownTimer
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.example.fitnessproject.R
 import com.example.fitnessproject.domain.model.TopicDetailModel
 import com.example.fitnessproject.ui.BaseActivity
+import com.example.fitnessproject.ui.activities.main.MainActivity
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -195,6 +197,12 @@ class VideoDetailActivity : BaseActivity<VideoDetailViewModel>() {
                 android.graphics.PorterDuff.Mode.MULTIPLY
             )
         }
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, QuestionExitActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onStop() {

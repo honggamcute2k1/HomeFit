@@ -2,10 +2,13 @@ package com.example.fitnessproject.ui.fragments.baocao
 
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import android.view.View
+import android.widget.TextView
 import com.applandeo.materialcalendarview.EventDay
 import com.example.fitnessproject.R
 import com.example.fitnessproject.domain.model.UserInformationModel
 import com.example.fitnessproject.ui.BaseFragment
+import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddHeight
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddWeight
 import com.example.fitnessproject.widget.YAxisRenderer
 import com.github.mikephil.charting.components.LimitLine
@@ -30,6 +33,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
 
     override fun initScreen() {
         setupLineChart()
+        var btnEditBmi: TextView? = view?.findViewById(R.id.btnEdiBmi)
         btnAddWeight?.setOnClickListener {
             activity?.let { a ->
                 dialogAddWeight?.dismiss()
@@ -45,6 +49,13 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             }
 
         }
+
+        btnEditBmi?.setOnClickListener(View.OnClickListener {
+            DialogAddHeight().show(
+                childFragmentManager, "PurchaseConfirmationDialog"
+            )
+        })
+
         calendarView?.setOnForwardPageChangeListener {
             changeMonthCalendar()
         }
@@ -118,7 +129,6 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         lineChart?.axisRight?.setDrawAxisLine(false)
         lineChart?.axisRight?.setDrawLabels(false)
         lineChart?.setDrawGridBackground(false)
-        val offset = resources.getDimension(R.dimen.mg_start)
         lineChart?.extraLeftOffset = 15F
     }
 
@@ -200,20 +210,20 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         when (yGranularity) {
             1F -> {
                 for (i in min..max) {
-                    labelListY.add(i.toInt())
+                    labelListY.add(i)
                 }
             }
             2F -> {
                 for (i in min..max step 2) {
                     if (i % 2 == 0) {
-                        labelListY.add(i.toInt())
+                        labelListY.add(i)
                     }
                 }
             }
             else -> {
                 for (i in min..max) {
                     if (i == min || i == max) {
-                        labelListY.add(i.toInt())
+                        labelListY.add(i)
                     }
                 }
             }
@@ -285,14 +295,12 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         val valueFormatter: ValueFormatter =
             object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return value.toString()//.replace(".0", "")
+                    return value.toString()
                 }
             }
-        val set1: LineDataSet
-        val set2: LineDataSet
 
-        set1 = LineDataSet(values, "DataSet 1")
-        set2 = LineDataSet(valueFakes, "DataSet 2")
+        val set1 = LineDataSet(values, "DataSet 1")
+        val set2 = LineDataSet(valueFakes, "DataSet 2")
         lineChart?.legend?.isEnabled = false
         set1.color = Color.WHITE
         set1.setCircleColor(Color.WHITE)
