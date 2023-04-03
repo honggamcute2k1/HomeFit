@@ -8,6 +8,7 @@ import com.example.fitnessproject.domain.model.TopicModel
 import com.example.fitnessproject.domain.model.TopicType
 import com.example.fitnessproject.ui.BaseActivity
 import com.example.fitnessproject.ui.activities.topicdetail.adapter.AdapterTopicDetail
+import com.example.fitnessproject.ui.activities.videodetail.VideoDetailActivity
 import com.example.fitnessproject.widget.DividerItemDecoratorAll
 import kotlinx.android.synthetic.main.activity_list_topic_detail.*
 
@@ -28,7 +29,10 @@ class ListTopicDetailActivity : BaseActivity<TopicDetailViewModel>() {
         btnStart?.setOnClickListener {
             val model = viewModel.topicDetailLiveData.value?.firstOrNull()
             model?.let { m ->
-                gotoDetail(m)
+                val intent =
+                    Intent(this, VideoDetailActivity::class.java)
+                intent.putExtra(VideoDetailActivity.KEY_TOPIC_DETAIL, m)
+                startActivity(intent)
             }
         }
 
