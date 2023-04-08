@@ -38,6 +38,7 @@
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".ui.activities.videodetail.QuestionExitActivity" />
+        <activity android:name=".ui.fragments.hoso.RemiderActivity" />
     </application>
 
 </manifest>
