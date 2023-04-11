@@ -14,7 +14,10 @@ import kotlinx.coroutines.withContext
 
 class PracticeViewModel(application: Application) : BaseViewModel(application) {
     private val mainUseCase: MainUseCase =
-        MainUseCaseImpl((application as FitnessApplication).topicRepository)
+        MainUseCaseImpl(
+            (application as FitnessApplication).topicRepository,
+            application.apiRepository
+        )
 
     val topicLiveData = MutableLiveData<List<TopicModel>>()
 

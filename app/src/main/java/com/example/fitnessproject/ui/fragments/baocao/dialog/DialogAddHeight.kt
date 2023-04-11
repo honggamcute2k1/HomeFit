@@ -7,11 +7,15 @@ import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.fitnessproject.R
 
 class DialogAddHeight : DialogFragment() {
+    private var editWeight: EditText? = null
+    private var editHeight: EditText? = null
+    var onSaveInformationClicked: ((Float, Float) -> Unit)? = null
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.setContentView(R.layout.layout_dialog_add_bmi)
@@ -28,7 +32,18 @@ class DialogAddHeight : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         )
 
+        editHeight = dialog.findViewById(R.id.editTextHeight)
+        editWeight = dialog.findViewById(R.id.editTextWeight)
         dialog.findViewById<TextView>(R.id.btnCancel)?.setOnClickListener {
+            dismiss()
+        }
+        dialog.findViewById<TextView>(R.id.btnSaveWeight).setOnClickListener {
+            val height = editHeight?.text?.toString() ?: ""
+            val weight = editWeight?.text?.toString() ?: ""
+            if (weight.isEmpty() || height.isEmpty()) {
+                return@setOnClickListener
+            }
+            onSaveInformationClicked?.invoke(height.toFloat(), weight.toFloat())
             dismiss()
         }
         return dialog

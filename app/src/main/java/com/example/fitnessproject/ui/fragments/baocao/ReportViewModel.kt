@@ -1,8 +1,10 @@
 package com.example.fitnessproject.ui.fragments.baocao
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.fitnessproject.FitnessApplication
+import com.example.fitnessproject.domain.model.LevelBMI
 import com.example.fitnessproject.domain.model.TopicDetailSelectedModel
 import com.example.fitnessproject.domain.model.UserInformationModel
 import com.example.fitnessproject.domain.usecase.main.MainUseCase
@@ -17,7 +19,10 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
     private val userUserCase: UserUseCase =
         UserUseCaseImpl((application as FitnessApplication).userRepository)
     private val mainUseCase: MainUseCase =
-        MainUseCaseImpl((application as FitnessApplication).topicRepository)
+        MainUseCaseImpl(
+            (application as FitnessApplication).topicRepository,
+            application.apiRepository
+        )
 
     val isAddWeightLiveData = MutableLiveData<Boolean>()
     val weightListLiveData = MutableLiveData<List<UserInformationModel>>()
@@ -29,6 +34,7 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
     override fun onCreate() {
         super.onCreate()
         getDataInTime()
+        getInformationBMI(LevelBMI.BEO_1)
     }
 
     fun insertOrUpdateWeight(weight: Double, time: Date) {
@@ -88,6 +94,27 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
                 topicDetailSelectedDeferred.await().distinctBy { it.timeDoIt }
             showLoading(isShowLoading = false)
         }
+    }
+
+    fun updateBMI(height: Float, weight: Float) {
+        showLoading(isShowLoading = true)
+        myScope.launch {
+            val user = withContext(Dispatchers.IO) {
+                userUserCase.getAllUser().first()
+            }
+            user.weight = weight.toDouble()
+            user.height = height.toDouble()
+            userUserCase.updateUser(user)
+        }
+    }
+
+    fun getInformationBMI(type: LevelBMI) {
+        showLoading(isShowLoading = true)
+        myScope.launch {
+            val bmiResponse = mainUseCase.getBMIResponse()
+            Log.e("TAG", "BMI $bmiResponse")
+        }
+        showLoading(false)
     }
 
     fun getCurrentDateString(): String {

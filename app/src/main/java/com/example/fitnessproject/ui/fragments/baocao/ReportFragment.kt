@@ -29,6 +29,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
     override fun getLayoutId() = R.layout.fragment_report
 
     private var dialogAddWeight: DialogAddWeight? = null
+    private var dialogAddHeight: DialogAddHeight? = null
     private var rendererY: YAxisRenderer? = null
 
     override fun initScreen() {
@@ -38,6 +39,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             activity?.let { a ->
                 dialogAddWeight?.dismiss()
                 (dialogAddWeight ?: DialogAddWeight.getInstance(viewModel.month!!)).apply {
+                    dialogAddWeight = this
                     onSaveWeightClicked = { day, weight ->
                         val time = Calendar.getInstance()
                         time.set(Calendar.MONTH, viewModel.month!!)
@@ -51,9 +53,14 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         }
 
         btnEditBmi?.setOnClickListener(View.OnClickListener {
-            DialogAddHeight().show(
-                childFragmentManager, "PurchaseConfirmationDialog"
-            )
+            dialogAddHeight?.dismiss()
+            if (dialogAddHeight == null) {
+                dialogAddHeight = DialogAddHeight()
+            }
+            dialogAddHeight?.show(childFragmentManager, "")
+            dialogAddHeight?.onSaveInformationClicked = { height, weight ->
+
+            }
         })
 
         calendarView?.setOnForwardPageChangeListener {

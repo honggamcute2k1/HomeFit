@@ -23,10 +23,10 @@ data class User(
     var gender: Int,
 
     @ColumnInfo(name = "height")
-    val height: Double? = null,
+    var height: Double? = null,
 
     @ColumnInfo(name = "weight")
-    val weight: Double? = null,
+    var weight: Double? = null,
 
     @ColumnInfo(name = "born")
     var born: Int,

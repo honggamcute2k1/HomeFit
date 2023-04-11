@@ -3,6 +3,8 @@ package com.example.fitnessproject.domain.usecase.main
 import com.example.fitnessproject.data.local.entity.TopicDetailSelected
 import com.example.fitnessproject.data.local.entity.TopicSelected
 import com.example.fitnessproject.data.local.repository.TopicRepository
+import com.example.fitnessproject.data.network.entity.BmiResponse
+import com.example.fitnessproject.data.network.repository.ApiRepository
 import com.example.fitnessproject.domain.model.TopicDetailModel
 import com.example.fitnessproject.domain.model.TopicDetailSelectedModel
 import com.example.fitnessproject.domain.model.TopicModel
@@ -10,7 +12,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class MainUseCaseImpl(private val topicRepository: TopicRepository) : MainUseCase {
+class MainUseCaseImpl(
+    private val topicRepository: TopicRepository,
+    private val apiRepository: ApiRepository
+) : MainUseCase {
     override suspend fun getAllTopic(): List<TopicModel> {
         return topicRepository.getAllTopic().map {
             TopicModel.toTopicModel(it)
@@ -73,6 +78,12 @@ class MainUseCaseImpl(private val topicRepository: TopicRepository) : MainUseCas
     ): List<TopicDetailSelectedModel> {
         return topicRepository.getTopicDetailSelectedInTime(startTime, endTime).map {
             TopicDetailSelectedModel.toTopicDetailSelectedModel(it)
+        }
+    }
+
+    override suspend fun getBMIResponse(): BmiResponse {
+        return withContext(Dispatchers.IO) {
+            apiRepository.getBMIResponse()
         }
     }
 }
