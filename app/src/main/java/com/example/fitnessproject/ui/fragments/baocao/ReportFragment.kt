@@ -2,15 +2,17 @@ package com.example.fitnessproject.ui.fragments.baocao
 
 import android.graphics.Color
 import android.graphics.DashPathEffect
-import android.view.View
-import android.widget.TextView
 import com.applandeo.materialcalendarview.EventDay
+import com.bumptech.glide.Glide
 import com.example.fitnessproject.R
+import com.example.fitnessproject.domain.model.LevelBMI
 import com.example.fitnessproject.domain.model.UserInformationModel
 import com.example.fitnessproject.ui.BaseFragment
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddHeight
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddWeight
+import com.example.fitnessproject.ui.showOrGone
 import com.example.fitnessproject.widget.YAxisRenderer
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -34,7 +36,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
 
     override fun initScreen() {
         setupLineChart()
-        var btnEditBmi: TextView? = view?.findViewById(R.id.btnEdiBmi)
+        Glide.with(this).load(R.drawable.loading).into(loadingBmi)
         btnAddWeight?.setOnClickListener {
             activity?.let { a ->
                 dialogAddWeight?.dismiss()
@@ -52,16 +54,13 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
 
         }
 
-        btnEditBmi?.setOnClickListener(View.OnClickListener {
-            dialogAddHeight?.dismiss()
-            if (dialogAddHeight == null) {
-                dialogAddHeight = DialogAddHeight()
-            }
-            dialogAddHeight?.show(childFragmentManager, "")
-            dialogAddHeight?.onSaveInformationClicked = { height, weight ->
+        btnEdiBmi?.setOnClickListener {
+            viewModel.getInformation()
+        }
 
-            }
-        })
+        btnMoreAdvise?.setOnClickListener {
+
+        }
 
         calendarView?.setOnForwardPageChangeListener {
             changeMonthCalendar()
@@ -84,7 +83,17 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
 
     override fun bindData() {
         super.bindData()
-        viewModel.weightListLiveData.observe(this) { list ->
+        viewModel.userInfoLiveData.observe(viewLifecycleOwner) {
+            dialogAddWeight?.dismiss()
+            dialogAddWeight = null
+            dialogAddHeight = DialogAddHeight.getInstance(it.first, it.second)
+            dialogAddHeight?.show(childFragmentManager, "")
+            dialogAddHeight?.onSaveInformationClicked = { height, weight ->
+                viewModel.updateBMI(height, weight)
+            }
+        }
+
+        viewModel.weightListLiveData.observe(viewLifecycleOwner) { list ->
             val lightest = list.minByOrNull { it.weight!! }?.weight ?: "--"
             val heaviest = list.maxByOrNull { it.weight!! }?.weight ?: "--"
             val current =
@@ -96,13 +105,13 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             setDataLineChart(entryLineChartList = list, target = null)
         }
 
-        viewModel.isAddWeightLiveData.observe(this) { isSuccess ->
+        viewModel.isAddWeightLiveData.observe(viewLifecycleOwner) { isSuccess ->
             if (isSuccess) {
                 viewModel.getDataInTime(viewModel.year, viewModel.month)
             }
         }
 
-        viewModel.topicDetailSelectedLiveData.observe(this) { list ->
+        viewModel.topicDetailSelectedLiveData.observe(viewLifecycleOwner) { list ->
             val events: MutableList<EventDay> = ArrayList()
             list.forEach { item ->
                 val calendar = Calendar.getInstance()
@@ -110,6 +119,32 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
                 events.add(EventDay(calendar, R.drawable.ic_female))
             }
             calendarView?.setEvents(events)
+        }
+
+        viewModel.loadingBMI.observe(viewLifecycleOwner) {
+            loadingBmi?.showOrGone(it)
+            linearBmi?.showOrGone(!it)
+        }
+
+        viewModel.noBmiLiveData.observe(viewLifecycleOwner) {
+            txtAdvise?.text = "Bạn chưa có chỉ số BMI, vui lòng bấm nút chỉnh sửa!"
+            btnMoreAdvise?.showOrGone(isShow = false)
+        }
+
+        viewModel.bmiLiveData.observe(viewLifecycleOwner) {
+            val bmi = it.first
+            val item = it.second
+            txtAdvise?.text =
+                "Chỉ số BMI của bạn là ${(bmi * 100).toInt() / 100F}. Bạn đang ở tình trạng ${
+                    LevelBMI.getLevel(
+                        item.level
+                    ).detail
+                }..."
+            btnMoreAdvise?.showOrGone(isShow = true)
+        }
+
+        viewModel.updateInfoUser.observe(viewLifecycleOwner) {
+            viewModel.getInformationBMI()
         }
 
     }
@@ -347,6 +382,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         val data = LineData(dataSets)
         data.setValueFormatter(valueFormatter)
         lineChart?.data = data
+        lineChart?.animateY(1000, Easing.EaseInBounce);
         lineChart?.invalidate()
     }
 }

@@ -1,7 +1,8 @@
 package com.example.fitnessproject.domain.usecase.main
 
 import com.example.fitnessproject.data.local.entity.TopicSelected
-import com.example.fitnessproject.data.network.entity.BmiResponse
+import com.example.fitnessproject.data.network.entity.BmiItem
+import com.example.fitnessproject.domain.model.LevelBMI
 import com.example.fitnessproject.domain.model.TopicDetailModel
 import com.example.fitnessproject.domain.model.TopicDetailSelectedModel
 import com.example.fitnessproject.domain.model.TopicModel
@@ -24,5 +25,5 @@ interface MainUseCase {
         endTime: Date
     ): List<TopicDetailSelectedModel>
 
-    suspend fun getBMIResponse(): BmiResponse
+    suspend fun getBMIResponse(levelBMI: LevelBMI): BmiItem
 }

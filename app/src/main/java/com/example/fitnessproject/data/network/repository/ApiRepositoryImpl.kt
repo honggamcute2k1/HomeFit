@@ -5,6 +5,6 @@ import com.example.fitnessproject.data.network.entity.BmiResponse
 
 class ApiRepositoryImpl(private val apiClient: ApiService) : ApiRepository {
     override suspend fun getBMIResponse(): BmiResponse {
-        return apiClient.getBMIResponse().body()!!
+        return apiClient.getBMIResponse()
     }
 }

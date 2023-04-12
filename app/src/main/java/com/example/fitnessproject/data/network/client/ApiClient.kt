@@ -2,6 +2,7 @@ package com.example.fitnessproject.data.network.client
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class ApiClient {
@@ -16,7 +17,8 @@ class ApiClient {
             return retrofit ?: synchronized(this) {
                 val re = Retrofit.Builder()
                     .baseUrl("https://raw.githubusercontent.com/nguyenngoclinhbkhn/FitnessProject/master/")
-                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+//                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 retrofit = re
                 re

@@ -16,10 +16,26 @@ class DialogAddHeight : DialogFragment() {
     private var editWeight: EditText? = null
     private var editHeight: EditText? = null
     var onSaveInformationClicked: ((Float, Float) -> Unit)? = null
+
+    companion object {
+        const val KEY_WEIGHT = "KEY_WEIGHT"
+        const val KEY_HEIGHT = "KEY_HEIGHT"
+        fun getInstance(weight: Double?, height: Double?): DialogAddHeight {
+            val dialog = DialogAddHeight()
+            val bundle = Bundle()
+            weight?.let { bundle.putDouble(KEY_WEIGHT, it) }
+            height?.let { bundle.putDouble(KEY_HEIGHT, it) }
+            dialog.arguments = bundle
+            return dialog
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.setContentView(R.layout.layout_dialog_add_bmi)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val weight1 = arguments?.getDouble(KEY_WEIGHT)
+        val height1 = arguments?.getDouble(KEY_HEIGHT)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             dialog.window?.setDecorFitsSystemWindows(false)
         } else {
@@ -34,6 +50,10 @@ class DialogAddHeight : DialogFragment() {
 
         editHeight = dialog.findViewById(R.id.editTextHeight)
         editWeight = dialog.findViewById(R.id.editTextWeight)
+        if (weight1 != null && height1 != null) {
+            editHeight?.setText(height1.toInt().toString())
+            editWeight?.setText(weight1.toInt().toString())
+        }
         dialog.findViewById<TextView>(R.id.btnCancel)?.setOnClickListener {
             dismiss()
         }
@@ -49,7 +69,4 @@ class DialogAddHeight : DialogFragment() {
         return dialog
     }
 
-    companion object {
-        const val TAG = "PurchaseConfirmationDialog"
-    }
 }

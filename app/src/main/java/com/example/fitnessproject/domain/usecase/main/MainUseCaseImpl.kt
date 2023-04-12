@@ -3,8 +3,9 @@ package com.example.fitnessproject.domain.usecase.main
 import com.example.fitnessproject.data.local.entity.TopicDetailSelected
 import com.example.fitnessproject.data.local.entity.TopicSelected
 import com.example.fitnessproject.data.local.repository.TopicRepository
-import com.example.fitnessproject.data.network.entity.BmiResponse
+import com.example.fitnessproject.data.network.entity.BmiItem
 import com.example.fitnessproject.data.network.repository.ApiRepository
+import com.example.fitnessproject.domain.model.LevelBMI
 import com.example.fitnessproject.domain.model.TopicDetailModel
 import com.example.fitnessproject.domain.model.TopicDetailSelectedModel
 import com.example.fitnessproject.domain.model.TopicModel
@@ -81,9 +82,10 @@ class MainUseCaseImpl(
         }
     }
 
-    override suspend fun getBMIResponse(): BmiResponse {
+    override suspend fun getBMIResponse(levelBMI: LevelBMI): BmiItem {
         return withContext(Dispatchers.IO) {
-            apiRepository.getBMIResponse()
+            apiRepository.getBMIResponse().items.first { it.level == levelBMI.level }
+
         }
     }
 }
