@@ -25,11 +25,13 @@ class DialogAddWeight : DialogFragment() {
 
     companion object {
         const val KEY_MONTH = "KEY_MONTH"
+        const val KEY_INFO = "KEY_INFO"
 
-        fun getInstance(month: Int): DialogAddWeight {
+        fun getInstance(month: Int, list: ArrayList<String>): DialogAddWeight {
             val dialogAddWeight = DialogAddWeight()
             val bundle = Bundle()
             bundle.putInt(KEY_MONTH, month)
+            bundle.putStringArrayList(KEY_INFO, list)
             dialogAddWeight.arguments = bundle
             return dialogAddWeight
         }
@@ -54,6 +56,16 @@ class DialogAddWeight : DialogFragment() {
 
         arguments?.let { it ->
             val month = it.getInt(KEY_MONTH)
+            val stringList = it.getStringArrayList(KEY_INFO) ?: arrayListOf()
+            val list = mutableListOf<Pair<Double, Int>>()
+                .apply {
+                    stringList.forEach { item ->
+                        val array = item.split(":")
+                        val weight = array[0].toDouble()
+                        val day = array[1].toInt()
+                        add(weight to day)
+                    }
+                }
             dialog.findViewById<TextView>(R.id.txtMonth)?.text = month.getMonth()
 
             dialog.findViewById<TextView>(R.id.btnCancel)?.setOnClickListener {
@@ -73,6 +85,9 @@ class DialogAddWeight : DialogFragment() {
                 adapter = AdapterDays(months = getListDayOfMonth(month),
                     onDayClicked = { day ->
                         daySelected = day
+                        list.firstOrNull { it.second == daySelected }?.let {
+                            editTextWeight?.setText(it.first.toString())
+                        } ?: editTextWeight?.setText("")
                     })
             }
         }

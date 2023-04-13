@@ -26,6 +26,7 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
     val weightListLiveData = MutableLiveData<List<UserInformationModel>>()
     val topicDetailSelectedLiveData = MutableLiveData<List<TopicDetailSelectedModel>>()
     val topicDetailLiveData = MutableLiveData<ArrayList<TopicDetailModel>>()
+    val informationTimeLiveData = MutableLiveData<ArrayList<String>>()
     val gender: Gender? = null
 
     val loadingBMI = MutableLiveData<Boolean>()
@@ -62,6 +63,36 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
                 )
             )
             isAddWeightLiveData.value = true
+        }
+    }
+
+    fun getUserInformationInTime(
+        year: Int? = null,
+        month: Int? = null
+    ) {
+        showLoading(isShowLoading = true)
+        myScope.launch {
+            val startDate = Calendar.getInstance()
+            val currentMonth = month ?: startDate.get(Calendar.MONTH)
+            val currentYear = year ?: startDate.get(Calendar.YEAR)
+            val startDay = 1
+            startDate.set(currentYear, currentMonth, startDay)
+            val endDay = startDate.getActualMaximum(Calendar.DAY_OF_MONTH)
+            val endDate = Calendar.getInstance()
+            endDate.set(currentYear, currentMonth, endDay)
+            val infoList = userUserCase.getWeightOfUserInTime(
+                startDate.time,
+                endDate.time
+            )
+            val weightList = arrayListOf<String>()
+            val calendar = Calendar.getInstance()
+            infoList.filterNotNull().map {
+                calendar.time = it.time
+                weightList.add(
+                    it.weight.toString().plus(":").plus(calendar.get(Calendar.DAY_OF_MONTH))
+                )
+            }
+            informationTimeLiveData.value = weightList
             showLoading(isShowLoading = false)
         }
     }

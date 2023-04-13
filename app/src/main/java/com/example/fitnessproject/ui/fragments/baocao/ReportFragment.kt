@@ -43,20 +43,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         setupLineChart()
         Glide.with(this).load(R.drawable.loading).into(loadingBmi)
         btnAddWeight?.setOnClickListener {
-            activity?.let { a ->
-                dialogAddWeight?.dismiss()
-                (dialogAddWeight ?: DialogAddWeight.getInstance(viewModel.month!!)).apply {
-                    dialogAddWeight = this
-                    onSaveWeightClicked = { day, weight ->
-                        val time = Calendar.getInstance()
-                        time.set(Calendar.MONTH, viewModel.month!!)
-                        time.set(Calendar.DAY_OF_MONTH, day)
-                        viewModel.insertOrUpdateWeight(weight, time.time)
-                    }
-                    show(a.supportFragmentManager, "")
-                }
-            }
-
+            viewModel.getUserInformationInTime(viewModel.year, viewModel.month)
         }
 
         btnEdiBmi?.setOnClickListener {
@@ -167,7 +154,22 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             dialogTopicDetails?.show(childFragmentManager, "")
         }
 
+        viewModel.informationTimeLiveData.observe(viewLifecycleOwner) {
+            activity?.let { a ->
+                dialogAddWeight?.dismiss()
+                dialogAddWeight = null
+                dialogAddWeight = DialogAddWeight.getInstance(viewModel.month!!, it)
+                dialogAddWeight?.onSaveWeightClicked = { day, weight ->
+                    val time = Calendar.getInstance()
+                    time.set(Calendar.MONTH, viewModel.month!!)
+                    time.set(Calendar.DAY_OF_MONTH, day)
+                    viewModel.insertOrUpdateWeight(weight, time.time)
+                }
+                dialogAddWeight?.show(a.supportFragmentManager, "")
+            }
+        }
     }
+
 
     private fun setupLineChart() {
         rendererY = YAxisRenderer(
