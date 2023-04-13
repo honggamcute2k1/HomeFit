@@ -5,8 +5,8 @@ enum class Gender(val gender: Int) {
     FEMALE(1);
 
     companion object {
-        fun valueOf(gender: Int): Gender? {
-            return values().firstOrNull { it.gender == gender }
+        fun valueOf(gender: Int): Gender {
+            return values().firstOrNull { it.gender == gender } ?: MALE
         }
     }
 }

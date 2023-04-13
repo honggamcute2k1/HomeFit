@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.example.fitnessproject.FitnessApplication
 import com.example.fitnessproject.data.network.entity.BmiItem
-import com.example.fitnessproject.domain.model.LevelBMI
-import com.example.fitnessproject.domain.model.TopicDetailSelectedModel
-import com.example.fitnessproject.domain.model.UserInformationModel
+import com.example.fitnessproject.domain.model.*
 import com.example.fitnessproject.domain.usecase.main.MainUseCase
 import com.example.fitnessproject.domain.usecase.main.MainUseCaseImpl
 import com.example.fitnessproject.domain.usecase.user.UserUseCase
@@ -27,6 +25,8 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
     val isAddWeightLiveData = MutableLiveData<Boolean>()
     val weightListLiveData = MutableLiveData<List<UserInformationModel>>()
     val topicDetailSelectedLiveData = MutableLiveData<List<TopicDetailSelectedModel>>()
+    val topicDetailLiveData = MutableLiveData<ArrayList<TopicDetailModel>>()
+    val gender: Gender? = null
 
     val loadingBMI = MutableLiveData<Boolean>()
     val updateInfoUser = MutableLiveData<Boolean>()
@@ -158,5 +158,24 @@ class ReportViewModel(application: Application) : BaseViewModel(application) {
     fun getCurrentDateString(): String {
         val calendar = Calendar.getInstance()
         return calendar.time.toDateString()
+    }
+
+    fun getGenderUser() = sharePreference.getGender()
+
+    fun getListTopicDetailModel(byTime: Date) {
+        showLoading(true)
+        myScope.launch {
+            val listTopicDetailSelectedModel = mainUseCase.getTopicSelectedDetailInDay(byTime)
+            val idList = listTopicDetailSelectedModel.map { it.topicDetailId }
+            val list = arrayListOf<TopicDetailModel>()
+            idList.forEach { id ->
+                val topicDetailModel = withContext(Dispatchers.IO) {
+                    mainUseCase.getTopicDetailById(id)
+                }
+                list.add(topicDetailModel)
+            }
+            topicDetailLiveData.value = list
+            showLoading(false)
+        }
     }
 }

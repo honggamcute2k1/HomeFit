@@ -1,15 +1,19 @@
 package com.example.fitnessproject.ui.fragments.baocao
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import com.applandeo.materialcalendarview.EventDay
 import com.bumptech.glide.Glide
 import com.example.fitnessproject.R
+import com.example.fitnessproject.domain.model.Gender
 import com.example.fitnessproject.domain.model.LevelBMI
 import com.example.fitnessproject.domain.model.UserInformationModel
 import com.example.fitnessproject.ui.BaseFragment
+import com.example.fitnessproject.ui.activities.advise.AdviseActivity
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddHeight
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddWeight
+import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogListTopicDetailSelected
 import com.example.fitnessproject.ui.showOrGone
 import com.example.fitnessproject.widget.YAxisRenderer
 import com.github.mikephil.charting.animation.Easing
@@ -32,6 +36,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
 
     private var dialogAddWeight: DialogAddWeight? = null
     private var dialogAddHeight: DialogAddHeight? = null
+    private var dialogTopicDetails: DialogListTopicDetailSelected? = null
     private var rendererY: YAxisRenderer? = null
 
     override fun initScreen() {
@@ -59,7 +64,9 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         }
 
         btnMoreAdvise?.setOnClickListener {
-
+            val intent = Intent(activity, AdviseActivity::class.java)
+            intent.putExtra(AdviseActivity.KEY_BMI_ITEM, viewModel.bmiLiveData.value?.second)
+            startActivity(intent)
         }
 
         calendarView?.setOnForwardPageChangeListener {
@@ -70,6 +77,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         }
 
         calendarView?.setOnDayClickListener { eventDay ->
+            viewModel.getListTopicDetailModel(eventDay.calendar.time)
         }
     }
 
@@ -116,7 +124,12 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             list.forEach { item ->
                 val calendar = Calendar.getInstance()
                 calendar.time = item.timeDoIt
-                events.add(EventDay(calendar, R.drawable.ic_female))
+                events.add(
+                    EventDay(
+                        calendar,
+                        if (viewModel.getGenderUser() == Gender.MALE) R.drawable.ic_male else R.drawable.ic_female
+                    )
+                )
             }
             calendarView?.setEvents(events)
         }
@@ -147,6 +160,13 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             viewModel.getInformationBMI()
         }
 
+        viewModel.topicDetailLiveData.observe(viewLifecycleOwner) {
+            dialogTopicDetails?.dismiss()
+            dialogTopicDetails = null
+            dialogTopicDetails = DialogListTopicDetailSelected.getInstance(it)
+            dialogTopicDetails?.show(childFragmentManager, "")
+        }
+
     }
 
     private fun setupLineChart() {
@@ -172,6 +192,10 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         lineChart?.axisRight?.setDrawLabels(false)
         lineChart?.setDrawGridBackground(false)
         lineChart?.extraLeftOffset = 15F
+
+        lineChart?.axisRight?.enableGridDashedLine(10f, 10f, 2f)
+        lineChart?.axisLeft?.enableGridDashedLine(10f, 10f, 2f)
+        lineChart?.xAxis?.enableGridDashedLine(10f, 10f, 2f)
     }
 
     private fun setDataLineChart(

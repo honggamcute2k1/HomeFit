@@ -61,6 +61,13 @@ class MainUseCaseImpl(
         }
     }
 
+    override suspend fun getTopicSelectedDetailInDay(day: Date): List<TopicDetailSelectedModel> {
+        return withContext(Dispatchers.IO) {
+            topicRepository.getTopicSelectedDetailInDay(day)
+                .map { TopicDetailSelectedModel.toTopicDetailSelectedModel(it) }
+        }
+    }
+
     override suspend fun insertTopicSelectedDetail(topicDetailSelectedModel: TopicDetailSelectedModel) {
         val topicDetailSelected = TopicDetailSelected(
             state = topicDetailSelectedModel.state,

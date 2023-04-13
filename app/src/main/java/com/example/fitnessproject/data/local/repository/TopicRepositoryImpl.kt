@@ -46,6 +46,12 @@ class TopicRepositoryImpl(
         )
     }
 
+    override suspend fun getTopicSelectedDetailInDay(time: Date): List<TopicDetailSelected> {
+        return topicDetailDao.getTopicDetailSelectedInDay(
+            date = time
+        )
+    }
+
     override suspend fun getTopicDetailSelectedInTime(
         startTime: Date,
         endTime: Date

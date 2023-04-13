@@ -2,6 +2,7 @@ package com.example.fitnessproject.data.local.repository
 
 import android.content.Context
 import com.example.fitnessproject.FitnessApplication
+import com.example.fitnessproject.domain.model.Gender
 
 class SharePreferenceImpl(application: FitnessApplication) : SharePreference {
     private val sharePreference =
@@ -34,4 +35,10 @@ class SharePreferenceImpl(application: FitnessApplication) : SharePreference {
 
     override fun getUserId() = sharePreference.getInt(SharePreference.KEY_ID_USER, -1)
 
+    override fun saveGender(gender: Int) {
+        sharePreference.edit().putInt(SharePreference.KEY_GENDER, gender).apply()
+    }
+
+    override fun getGender() =
+        Gender.valueOf(sharePreference.getInt(SharePreference.KEY_GENDER, -1))
 }

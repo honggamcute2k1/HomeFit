@@ -31,7 +31,6 @@ class FitnessApplication : Application() {
     private fun getScreenSize() {
         resources.displayMetrics.run {
             screenDensity = this.density
-
         }
     }
 }

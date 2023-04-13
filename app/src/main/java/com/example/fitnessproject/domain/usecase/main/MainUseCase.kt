@@ -18,6 +18,10 @@ interface MainUseCase {
         idTopicDetail: Int
     ): TopicDetailSelectedModel?
 
+    suspend fun getTopicSelectedDetailInDay(
+        day: Date
+    ): List<TopicDetailSelectedModel>
+
     suspend fun getTopicSelectedById(idTopic: Int): TopicSelected?
     suspend fun insertTopicSelected(topicSelected: TopicSelected)
     suspend fun getTopicDetailSelectedInTime(

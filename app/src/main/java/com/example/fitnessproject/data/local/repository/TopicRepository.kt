@@ -12,6 +12,7 @@ interface TopicRepository {
     suspend fun getTopicDetailById(idDetail: Int): TopicDetail
     suspend fun insertTopicSelectedDetail(topicDetailSelected: TopicDetailSelected)
     suspend fun getTopicSelectedDetailByTime(time: Date, idTopicDetail: Int): TopicDetailSelected?
+    suspend fun getTopicSelectedDetailInDay(time: Date): List<TopicDetailSelected>
     suspend fun getTopicSelectedById(idTopic: Int): TopicSelected?
     suspend fun insertTopicSelected(topicSelected: TopicSelected)
     suspend fun getTopicDetailSelectedInTime(
