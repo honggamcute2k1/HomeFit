@@ -1,16 +1,22 @@
 package com.example.fitnessproject.ui.fragments.baocao
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.DashPathEffect
-import android.view.View
-import android.widget.TextView
 import com.applandeo.materialcalendarview.EventDay
+import com.bumptech.glide.Glide
 import com.example.fitnessproject.R
+import com.example.fitnessproject.domain.model.Gender
+import com.example.fitnessproject.domain.model.LevelBMI
 import com.example.fitnessproject.domain.model.UserInformationModel
 import com.example.fitnessproject.ui.BaseFragment
+import com.example.fitnessproject.ui.activities.advise.AdviseActivity
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddHeight
 import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogAddWeight
+import com.example.fitnessproject.ui.fragments.baocao.dialog.DialogListTopicDetailSelected
+import com.example.fitnessproject.ui.showOrGone
 import com.example.fitnessproject.widget.YAxisRenderer
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -29,32 +35,26 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
     override fun getLayoutId() = R.layout.fragment_report
 
     private var dialogAddWeight: DialogAddWeight? = null
+    private var dialogAddHeight: DialogAddHeight? = null
+    private var dialogTopicDetails: DialogListTopicDetailSelected? = null
     private var rendererY: YAxisRenderer? = null
 
     override fun initScreen() {
         setupLineChart()
-        var btnEditBmi: TextView? = view?.findViewById(R.id.btnEdiBmi)
+        Glide.with(this).load(R.drawable.loading).into(loadingBmi)
         btnAddWeight?.setOnClickListener {
-            activity?.let { a ->
-                dialogAddWeight?.dismiss()
-                (dialogAddWeight ?: DialogAddWeight.getInstance(viewModel.month!!)).apply {
-                    onSaveWeightClicked = { day, weight ->
-                        val time = Calendar.getInstance()
-                        time.set(Calendar.MONTH, viewModel.month!!)
-                        time.set(Calendar.DAY_OF_MONTH, day)
-                        viewModel.insertOrUpdateWeight(weight, time.time)
-                    }
-                    show(a.supportFragmentManager, "")
-                }
-            }
-
+            viewModel.getUserInformationInTime(viewModel.year, viewModel.month)
         }
 
-        btnEditBmi?.setOnClickListener(View.OnClickListener {
-            DialogAddHeight().show(
-                childFragmentManager, "PurchaseConfirmationDialog"
-            )
-        })
+        btnEdiBmi?.setOnClickListener {
+            viewModel.getInformation()
+        }
+
+        btnMoreAdvise?.setOnClickListener {
+            val intent = Intent(activity, AdviseActivity::class.java)
+            intent.putExtra(AdviseActivity.KEY_BMI_ITEM, viewModel.bmiLiveData.value?.second)
+            startActivity(intent)
+        }
 
         calendarView?.setOnForwardPageChangeListener {
             changeMonthCalendar()
@@ -64,6 +64,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         }
 
         calendarView?.setOnDayClickListener { eventDay ->
+            viewModel.getListTopicDetailModel(eventDay.calendar.time)
         }
     }
 
@@ -77,7 +78,17 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
 
     override fun bindData() {
         super.bindData()
-        viewModel.weightListLiveData.observe(this) { list ->
+        viewModel.userInfoLiveData.observe(viewLifecycleOwner) {
+            dialogAddWeight?.dismiss()
+            dialogAddWeight = null
+            dialogAddHeight = DialogAddHeight.getInstance(it.first, it.second)
+            dialogAddHeight?.show(childFragmentManager, "")
+            dialogAddHeight?.onSaveInformationClicked = { height, weight ->
+                viewModel.updateBMI(height, weight)
+            }
+        }
+
+        viewModel.weightListLiveData.observe(viewLifecycleOwner) { list ->
             val lightest = list.minByOrNull { it.weight!! }?.weight ?: "--"
             val heaviest = list.maxByOrNull { it.weight!! }?.weight ?: "--"
             val current =
@@ -89,23 +100,76 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
             setDataLineChart(entryLineChartList = list, target = null)
         }
 
-        viewModel.isAddWeightLiveData.observe(this) { isSuccess ->
+        viewModel.isAddWeightLiveData.observe(viewLifecycleOwner) { isSuccess ->
             if (isSuccess) {
                 viewModel.getDataInTime(viewModel.year, viewModel.month)
             }
         }
 
-        viewModel.topicDetailSelectedLiveData.observe(this) { list ->
+        viewModel.topicDetailSelectedLiveData.observe(viewLifecycleOwner) { list ->
             val events: MutableList<EventDay> = ArrayList()
             list.forEach { item ->
                 val calendar = Calendar.getInstance()
                 calendar.time = item.timeDoIt
-                events.add(EventDay(calendar, R.drawable.ic_female))
+                events.add(
+                    EventDay(
+                        calendar,
+                        if (viewModel.getGenderUser() == Gender.MALE) R.drawable.ic_male else R.drawable.ic_female
+                    )
+                )
             }
             calendarView?.setEvents(events)
         }
 
+        viewModel.loadingBMI.observe(viewLifecycleOwner) {
+            loadingBmi?.showOrGone(it)
+            linearBmi?.showOrGone(!it)
+        }
+
+        viewModel.noBmiLiveData.observe(viewLifecycleOwner) {
+            txtAdvise?.text = "Bạn chưa có chỉ số BMI, vui lòng bấm nút chỉnh sửa!"
+            btnMoreAdvise?.showOrGone(isShow = false)
+        }
+
+        viewModel.bmiLiveData.observe(viewLifecycleOwner) {
+            val bmi = it.first
+            val item = it.second
+            txtAdvise?.text =
+                "Chỉ số BMI của bạn là ${(bmi * 100).toInt() / 100F}. Bạn đang ở tình trạng ${
+                    LevelBMI.getLevel(
+                        item.level
+                    ).detail
+                }..."
+            btnMoreAdvise?.showOrGone(isShow = true)
+        }
+
+        viewModel.updateInfoUser.observe(viewLifecycleOwner) {
+            viewModel.getInformationBMI()
+        }
+
+        viewModel.topicDetailLiveData.observe(viewLifecycleOwner) {
+            dialogTopicDetails?.dismiss()
+            dialogTopicDetails = null
+            dialogTopicDetails = DialogListTopicDetailSelected.getInstance(it)
+            dialogTopicDetails?.show(childFragmentManager, "")
+        }
+
+        viewModel.informationTimeLiveData.observe(viewLifecycleOwner) {
+            activity?.let { a ->
+                dialogAddWeight?.dismiss()
+                dialogAddWeight = null
+                dialogAddWeight = DialogAddWeight.getInstance(viewModel.month!!, it)
+                dialogAddWeight?.onSaveWeightClicked = { day, weight ->
+                    val time = Calendar.getInstance()
+                    time.set(Calendar.MONTH, viewModel.month!!)
+                    time.set(Calendar.DAY_OF_MONTH, day)
+                    viewModel.insertOrUpdateWeight(weight, time.time)
+                }
+                dialogAddWeight?.show(a.supportFragmentManager, "")
+            }
+        }
     }
+
 
     private fun setupLineChart() {
         rendererY = YAxisRenderer(
@@ -130,6 +194,10 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         lineChart?.axisRight?.setDrawLabels(false)
         lineChart?.setDrawGridBackground(false)
         lineChart?.extraLeftOffset = 15F
+
+        lineChart?.axisRight?.enableGridDashedLine(10f, 10f, 2f)
+        lineChart?.axisLeft?.enableGridDashedLine(10f, 10f, 2f)
+        lineChart?.xAxis?.enableGridDashedLine(10f, 10f, 2f)
     }
 
     private fun setDataLineChart(
@@ -340,6 +408,7 @@ class ReportFragment : BaseFragment<ReportViewModel>() {
         val data = LineData(dataSets)
         data.setValueFormatter(valueFormatter)
         lineChart?.data = data
+        lineChart?.animateY(1000, Easing.EaseInBounce);
         lineChart?.invalidate()
     }
 }

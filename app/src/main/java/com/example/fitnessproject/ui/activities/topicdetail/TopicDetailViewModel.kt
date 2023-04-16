@@ -12,7 +12,10 @@ import kotlinx.coroutines.launch
 
 open class TopicDetailViewModel(application: Application) : BaseViewModel(application) {
     val mainUseCase: MainUseCase =
-        MainUseCaseImpl((application as FitnessApplication).topicRepository)
+        MainUseCaseImpl(
+            (application as FitnessApplication).topicRepository,
+            application.apiRepository
+        )
 
     val topicDetailLiveData = MutableLiveData<List<TopicDetailModel>>()
     val detailLiveData = MutableLiveData<TopicDetailModel>()

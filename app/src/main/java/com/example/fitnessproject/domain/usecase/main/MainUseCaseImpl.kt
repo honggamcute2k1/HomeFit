@@ -3,6 +3,9 @@ package com.example.fitnessproject.domain.usecase.main
 import com.example.fitnessproject.data.local.entity.TopicDetailSelected
 import com.example.fitnessproject.data.local.entity.TopicSelected
 import com.example.fitnessproject.data.local.repository.TopicRepository
+import com.example.fitnessproject.data.network.entity.BmiItem
+import com.example.fitnessproject.data.network.repository.ApiRepository
+import com.example.fitnessproject.domain.model.LevelBMI
 import com.example.fitnessproject.domain.model.TopicDetailModel
 import com.example.fitnessproject.domain.model.TopicDetailSelectedModel
 import com.example.fitnessproject.domain.model.TopicModel
@@ -10,7 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class MainUseCaseImpl(private val topicRepository: TopicRepository) : MainUseCase {
+class MainUseCaseImpl(
+    private val topicRepository: TopicRepository,
+    private val apiRepository: ApiRepository
+) : MainUseCase {
     override suspend fun getAllTopic(): List<TopicModel> {
         return topicRepository.getAllTopic().map {
             TopicModel.toTopicModel(it)
@@ -55,6 +61,13 @@ class MainUseCaseImpl(private val topicRepository: TopicRepository) : MainUseCas
         }
     }
 
+    override suspend fun getTopicSelectedDetailInDay(day: Date): List<TopicDetailSelectedModel> {
+        return withContext(Dispatchers.IO) {
+            topicRepository.getTopicSelectedDetailInDay(day)
+                .map { TopicDetailSelectedModel.toTopicDetailSelectedModel(it) }
+        }
+    }
+
     override suspend fun insertTopicSelectedDetail(topicDetailSelectedModel: TopicDetailSelectedModel) {
         val topicDetailSelected = TopicDetailSelected(
             state = topicDetailSelectedModel.state,
@@ -73,6 +86,13 @@ class MainUseCaseImpl(private val topicRepository: TopicRepository) : MainUseCas
     ): List<TopicDetailSelectedModel> {
         return topicRepository.getTopicDetailSelectedInTime(startTime, endTime).map {
             TopicDetailSelectedModel.toTopicDetailSelectedModel(it)
+        }
+    }
+
+    override suspend fun getBMIResponse(levelBMI: LevelBMI): BmiItem {
+        return withContext(Dispatchers.IO) {
+            apiRepository.getBMIResponse().items.first { it.level == levelBMI.level }
+
         }
     }
 }

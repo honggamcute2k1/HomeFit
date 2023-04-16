@@ -3,6 +3,8 @@ package com.example.fitnessproject
 import android.app.Application
 import com.example.fitnessproject.data.local.database.FitnessDatabase
 import com.example.fitnessproject.data.local.repository.*
+import com.example.fitnessproject.data.network.client.ApiClient
+import com.example.fitnessproject.data.network.repository.ApiRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
@@ -18,6 +20,7 @@ class FitnessApplication : Application() {
             database.topicDetailDao()
         )
     }
+    val apiRepository by lazy { ApiRepositoryImpl(ApiClient.getApiClient()) }
 
 
     override fun onCreate() {
@@ -28,7 +31,6 @@ class FitnessApplication : Application() {
     private fun getScreenSize() {
         resources.displayMetrics.run {
             screenDensity = this.density
-
         }
     }
 }
