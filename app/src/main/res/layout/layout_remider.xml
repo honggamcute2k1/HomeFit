@@ -54,6 +54,7 @@
         <TextView
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:id="@+id/btnMonday"
             android:layout_marginEnd="5dp"
             android:background="@drawable/bg_weekdays"
             android:gravity="center"
@@ -63,6 +64,7 @@
 
         <TextView
             android:layout_width="40dp"
+            android:id="@+id/btnTuesDay"
             android:layout_height="40dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/bg_weekdays"
@@ -74,6 +76,7 @@
         <TextView
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:id="@+id/btnWednesday"
             android:layout_marginEnd="5dp"
             android:background="@drawable/bg_weekdays"
             android:gravity="center"
@@ -85,6 +88,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="5dp"
+            android:id="@+id/btnThursday"
             android:background="@drawable/bg_weekdays"
             android:gravity="center"
             android:text="5"
@@ -95,6 +99,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="5dp"
+            android:id="@+id/btnFriday"
             android:background="@drawable/bg_weekdays"
             android:gravity="center"
             android:text="6"
@@ -104,6 +109,7 @@
         <TextView
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:id="@+id/btnSaturday"
             android:layout_marginEnd="5dp"
             android:background="@drawable/bg_weekdays"
             android:gravity="center"
@@ -113,6 +119,7 @@
 
         <TextView
             android:layout_width="40dp"
+            android:id="@+id/btnSunday"
             android:layout_height="40dp"
             android:background="@drawable/bg_weekdays"
             android:gravity="center"
