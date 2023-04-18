@@ -23,6 +23,7 @@ class InformationFragment : BaseFragment<InformationViewModel>() {
         super.bindData()
         viewModel.userInfoLiveData.observe(this) { user ->
             textView?.text = user.fullName.ifEmpty { "User name" }
+
             activity?.let {
                 user.thumbnail?.let { thumb ->
                     Glide.with(it).load(thumb).into(imgUser)
