@@ -61,9 +61,6 @@ dependencies {
 
 //    // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
-
-//    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
-//    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
 
     implementation 'com.applandeo:material-calendar-view:1.7.0'

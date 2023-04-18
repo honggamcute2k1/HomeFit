@@ -3,6 +3,7 @@ package com.example.fitnessproject.data.local.repository
 import android.content.Context
 import com.example.fitnessproject.FitnessApplication
 import com.example.fitnessproject.domain.model.Gender
+import com.example.fitnessproject.domain.model.Reminder
 
 class SharePreferenceImpl(application: FitnessApplication) : SharePreference {
     private val sharePreference =
@@ -41,4 +42,16 @@ class SharePreferenceImpl(application: FitnessApplication) : SharePreference {
 
     override fun getGender() =
         Gender.valueOf(sharePreference.getInt(SharePreference.KEY_GENDER, -1))
+
+    override fun saveReminder(reminder: Reminder) {
+        sharePreference.edit().putString(SharePreference.KEY_REMINDER, reminder.toJson()).apply()
+    }
+
+    override fun getReminder(): Reminder? {
+        val json = sharePreference.getString(SharePreference.KEY_REMINDER, "")
+        return json?.let {
+            if (json.isEmpty()) return null
+            Reminder.fromJson(it)
+        }
+    }
 }
