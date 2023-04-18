@@ -1,6 +1,7 @@
 package com.example.fitnessproject.data.local.repository
 
 import com.example.fitnessproject.domain.model.Gender
+import com.example.fitnessproject.domain.model.Reminder
 
 interface SharePreference {
     companion object {
@@ -9,6 +10,7 @@ interface SharePreference {
 
         const val KEY_ID_USER = "KEY_ID_USER"
         const val KEY_GENDER = "KEY_GENDER"
+        const val KEY_REMINDER = "KEY_REMINDER"
     }
 
     fun saveSetUpFirstTime(isSetup: Boolean)
@@ -19,4 +21,7 @@ interface SharePreference {
 
     fun saveGender(gender: Int)
     fun getGender(): Gender
+
+    fun saveReminder(reminder: Reminder)
+    fun getReminder(): Reminder?
 }
