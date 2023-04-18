@@ -19,18 +19,17 @@ import kotlinx.android.synthetic.main.activity_edit_information.*
 class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
     override fun getLayoutId() = R.layout.activity_edit_information
 
-    var imgSelfie: CircleImageView?= null
+    var imgSelfie: CircleImageView? = null
     var imgBack: ImageView? = null
     var txtAddImageView: TextView? = null
-    var uri:Uri ?= null
+    var uri: Uri? = null
 
     override fun initScreen() {
-        imgSelfie= findViewById<CircleImageView>(R.id.imgSelfie)
+        imgSelfie = findViewById<CircleImageView>(R.id.imgSelfie)
         val mFragmentManager = supportFragmentManager
         imgBack = findViewById(R.id.imgBack)
         txtAddImageView = findViewById(R.id.txtAddImageview)
         imgBack?.setOnClickListener(View.OnClickListener {
-
             onBackPressed()
         })
 
@@ -38,8 +37,8 @@ class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
             viewModel.user?.fullName = editTextFullName?.text?.toString() ?: ""
             viewModel.user?.born = edtBorn?.text?.toString()?.toInt() ?: 1980
             viewModel.user?.phoneNumber = edtPhone?.text?.toString() ?: ""
+            viewModel.user?.thumbnail = uri?.toString()
             viewModel.user?.let { it1 -> viewModel.updateUser(it1) }
-            viewModel.user?.thumbnail = uri.toString()
         }
 
         txtAddImageView?.setOnClickListener(View.OnClickListener {
@@ -70,6 +69,10 @@ class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
             viewModel.user = user
             setupData(user)
         }
+
+        viewModel.saveUserLiveData.observe(this) {
+            finish()
+        }
     }
 
     private fun setupData(user: User) {
@@ -77,7 +80,14 @@ class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
         edtPhone?.setText(user.phoneNumber)
         edtBorn?.setText(user.born.toString())
         editTextGender?.setText(Gender.valueOf(user.gender)?.name ?: "")
-        imgSelfie ?.setImageURI(uri)
+        user.thumbnail?.let {
+            imgSelfie?.setImageURI(Uri.parse(it))
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
     }
 
 }

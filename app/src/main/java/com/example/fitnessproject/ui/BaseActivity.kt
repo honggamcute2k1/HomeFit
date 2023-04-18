@@ -51,7 +51,6 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(), CoreInterf
 
     override fun onStop() {
         super.onStop()
-        viewModel.onStop()
     }
 }
 
