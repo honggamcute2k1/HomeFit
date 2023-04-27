@@ -26,6 +26,11 @@ class InformationFragment : BaseFragment<InformationViewModel>() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getUserInformation()
+    }
+
     override fun bindData() {
         super.bindData()
         viewModel.userInfoLiveData.observe(this) { user ->

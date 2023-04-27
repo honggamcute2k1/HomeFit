@@ -110,7 +110,7 @@ class RemiderActivity : BaseActivity<InformationViewModel>() {
                 this,
                 it.id,
                 alarmIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT
+                if (Build.VERSION.SDK_INT >= 33) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_CANCEL_CURRENT
             )
             alarmManager.cancel(intent)
         }
@@ -126,7 +126,7 @@ class RemiderActivity : BaseActivity<InformationViewModel>() {
                     this,
                     item.id,
                     alarmIntent,
-                    0
+                    if (Build.VERSION.SDK_INT >= 33) PendingIntent.FLAG_IMMUTABLE else 0
                 )
                 alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,

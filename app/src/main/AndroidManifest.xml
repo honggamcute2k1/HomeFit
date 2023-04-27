@@ -23,27 +23,45 @@
         android:theme="@style/Theme.FitnessProject">
         <activity
             android:name=".ui.activities.advise.AdviseActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.splash.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.gender.ChooseGenderActivity" />
-        <activity android:name=".ui.activities.main.MainActivity" />
-        <activity android:name=".ui.activities.topicdetail.ListTopicDetailActivity" />
-        <activity android:name=".ui.activities.topicdetail.TopicDetailActivity" />
-        <activity android:name=".ui.activities.editinformation.EditInformationActivity" />
-        <activity android:name=".ui.activities.videodetail.VideoDetailActivity" />
+        <activity
+            android:name=".ui.activities.gender.ChooseGenderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.topicdetail.ListTopicDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.topicdetail.TopicDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.editinformation.EditInformationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.videodetail.VideoDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".ui.activities.videodetail.QuestionExitActivity" />
-        <activity android:name=".ui.fragments.hoso.RemiderActivity" />
+        <activity
+            android:name=".ui.activities.videodetail.QuestionExitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fragments.hoso.RemiderActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".AlarmBroadCast" />
     </application>

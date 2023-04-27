@@ -25,6 +25,7 @@ class EditInformationActivity : BaseActivity<EditInformationViewModel>() {
     var uri: Uri? = null
 
     override fun initScreen() {
+        viewModel.getUserInformation()
         imgSelfie = findViewById<CircleImageView>(R.id.imgSelfie)
         val mFragmentManager = supportFragmentManager
         imgBack = findViewById(R.id.imgBack)

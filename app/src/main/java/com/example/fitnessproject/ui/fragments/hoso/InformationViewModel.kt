@@ -24,10 +24,9 @@ open class InformationViewModel(application: Application) : BaseViewModel(applic
 
     override fun onCreate() {
         super.onCreate()
-        getUserInformation()
     }
 
-    private fun getUserInformation() {
+    fun getUserInformation() {
         showLoading(isShowLoading = true)
         myScope.launch {
             val user = withContext(Dispatchers.IO) {

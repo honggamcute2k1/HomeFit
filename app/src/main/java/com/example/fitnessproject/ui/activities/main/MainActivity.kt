@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentManager
 import com.example.fitnessproject.R
 import com.example.fitnessproject.ui.BaseActivity
 import com.example.fitnessproject.ui.BaseFragment
+import com.example.fitnessproject.ui.dialog.DialogCongratulation
 import com.example.fitnessproject.ui.fragments.baocao.ReportFragment
 import com.example.fitnessproject.ui.fragments.hoso.InformationFragment
 import com.example.fitnessproject.ui.fragments.tapluyen.PracticeFragment
@@ -18,6 +19,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
         bottomMenu?.setupLayout(MenuType.TAP_LUYEN)
         bottomMenu?.onActionClicked = { menuType ->
             switchMenu(menuType)
+        }
+    }
+
+    override fun bindData() {
+        super.bindData()
+        viewModel.dayLiveData.observe(this) {
+            DialogCongratulation.getInstance(it).show(supportFragmentManager, "")
         }
     }
 
