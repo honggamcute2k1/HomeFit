@@ -2,7 +2,7 @@
 <resources>
     <dimen name="size_loading">80dp</dimen>
 
-    <dimen name="bottom_menu_size_icon">38dp</dimen>
+    <dimen name="bottom_menu_size_icon">32dp</dimen>
 
     <dimen name="mg_start">15dp</dimen>
 </resources>

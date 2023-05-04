@@ -48,13 +48,13 @@ class ChooseGenderActivity : BaseActivity<GenderViewModel>() {
 
     private fun setupLayoutGenderSelected() {
         if (!isMaleSelected && !isFemaleSelected) {
-            txtFemale?.setTextColor(Color.BLACK)
-            txtMale?.setTextColor(Color.BLACK)
+            txtFemale?.setTextColor(Color.YELLOW)
+            txtMale?.setTextColor(Color.YELLOW)
         } else if (isMaleSelected) {
             txtFemale?.setTextColor(Color.WHITE)
-            txtMale?.setTextColor(Color.BLACK)
+            txtMale?.setTextColor(Color.YELLOW)
         } else if (isFemaleSelected) {
-            txtFemale?.setTextColor(Color.BLACK)
+            txtFemale?.setTextColor(Color.YELLOW)
             txtMale?.setTextColor(Color.WHITE)
         }
     }

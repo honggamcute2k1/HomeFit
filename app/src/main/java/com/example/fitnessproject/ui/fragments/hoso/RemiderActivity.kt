@@ -110,7 +110,7 @@ class RemiderActivity : BaseActivity<InformationViewModel>() {
                 this,
                 it.id,
                 alarmIntent,
-                if (Build.VERSION.SDK_INT >= 33) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_CANCEL_CURRENT
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_CANCEL_CURRENT
             )
             alarmManager.cancel(intent)
         }
