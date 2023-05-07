@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="18dp"
             android:text="@string/practice_title"
             android:textColor="@color/white"
             android:textSize="24dp" />

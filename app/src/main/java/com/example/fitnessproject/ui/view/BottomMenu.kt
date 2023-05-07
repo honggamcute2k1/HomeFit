@@ -45,14 +45,14 @@ class BottomMenu @JvmOverloads constructor(
         resetLayout()
         when (menuType) {
             MenuType.TAP_LUYEN -> {
-                txtPractice.setTextColor(Color.BLACK)
+                txtPractice.setTextColor(Color.CYAN)
             }
             MenuType.HO_SO -> {
-                txtUser.setTextColor(Color.BLACK)
+                txtUser.setTextColor(Color.CYAN)
 
             }
             MenuType.BAO_CAO -> {
-                txtReport.setTextColor(Color.BLACK)
+                txtReport.setTextColor(Color.CYAN)
             }
         }
     }

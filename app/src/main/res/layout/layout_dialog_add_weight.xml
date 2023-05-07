@@ -55,7 +55,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:hint="CÂN NẶNG..."
                 android:inputType="number"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"

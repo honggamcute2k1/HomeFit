@@ -39,7 +39,7 @@
         <ImageView
             android:layout_width="@dimen/bottom_menu_size_icon"
             android:layout_height="@dimen/bottom_menu_size_icon"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_report" />
 
         <TextView
             android:layout_width="wrap_content"
