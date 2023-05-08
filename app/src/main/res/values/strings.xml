@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FitnessProject</string>
+    <string name="app_name">Home FIT</string>
 
     <!--Bottom menu-->
     <string name="bottom_menu_txt_btn_first">Tập luyện</string>

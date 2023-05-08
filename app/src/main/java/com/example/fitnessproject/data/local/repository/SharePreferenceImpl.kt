@@ -46,7 +46,7 @@ class SharePreferenceImpl(application: FitnessApplication) : SharePreference {
         Gender.valueOf(sharePreference.getInt(SharePreference.KEY_GENDER, -1))
 
     override fun saveReminder(reminder: Reminder) {
-        sharePreference.edit().putString(SharePreference.KEY_REMINDER, reminder.toJson()).apply()
+        sharePreference.edit().putString(SharePreference.KEY_REMINDER, reminder.toJson()).commit()
     }
 
     override fun getReminder(): Reminder? {
